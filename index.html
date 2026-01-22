@@ -44,37 +44,26 @@
 
 <body class="text-gray-200">
 
-  <!-- NAVBAR / MENU -->
-  <nav class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-pink-500/30">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      
-      <!-- Logo / Title -->
-      <div class="text-pink-400 font-bold tracking-widest">
-        🏴‍☠️ OG PIRATE
-      </div>
-
-      <!-- Menu Items -->
-      <div class="flex gap-6 text-sm font-semibold">
-        <a href="#" class="hover:text-pink-400 transition">Home</a>
-        <a href="#subjects" class="hover:text-pink-400 transition">Subjects</a>
-        <a href="PYQs-NEET-PG.html" class="hover:text-pink-400 transition">PYQs</a>
-
-        <!-- Instagram -->
-        <a
-          href="https://instagram.com/nameisrikshit"
-          target="_blank"
-          class="flex items-center gap-1 text-pink-400 hover:text-white transition"
-        >
-          <!-- Instagram Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-               fill="currentColor" class="w-4 h-4">
-            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
-          </svg>
-          Admin
-        </a>
-      </div>
-    </div>
-  </nav>
+  <!-- CONTACT ADMIN BUTTON (INSTAGRAM) -->
+  <a
+    href="https://instagram.com/nameisrikshit"
+    target="_blank"
+    class="fixed top-4 left-4 z-50
+           flex items-center gap-2
+           px-4 py-2 rounded-xl
+           bg-black/80 border border-pink-500/50
+           text-pink-400 text-sm font-semibold
+           hover:bg-pink-500 hover:text-black
+           hover:shadow-[0_0_20px_#ec4899]
+           transition-all duration-300"
+  >
+    <!-- Instagram Logo -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+         fill="currentColor" class="w-5 h-5">
+      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+    </svg>
+    Contact Admin
+  </a>
 
   <div id="root"></div>
 
@@ -114,7 +103,7 @@
       );
 
       return (
-        <main className="max-w-6xl mx-auto px-4 py-24">
+        <main className="max-w-6xl mx-auto px-4 py-10">
 
           <header className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-pink-500 mb-3">
@@ -138,13 +127,19 @@
             />
           </div>
 
-          <section id="subjects" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-            {filteredCards.map((card, index) => (
-              <a key={index} href={card.link} className={`card ${card.color}`}>
-                <h2>{card.title}</h2>
-                <p>{card.desc}</p>
-              </a>
-            ))}
+          <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {filteredCards.length > 0 ? (
+              filteredCards.map((card, index) => (
+                <a key={index} href={card.link} className={`card ${card.color}`}>
+                  <h2>{card.title}</h2>
+                  <p>{card.desc}</p>
+                </a>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 col-span-full">
+                No matching subjects found.
+              </p>
+            )}
           </section>
 
           <footer className="text-center text-gray-600 text-xs">
