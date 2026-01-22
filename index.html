@@ -44,11 +44,12 @@
 
 <body class="text-gray-200">
 
-  <!-- CONTACT ADMIN BUTTON -->
+  <!-- CONTACT ADMIN BUTTON (INSTAGRAM) -->
   <a
     href="https://instagram.com/nameisrikshit"
     target="_blank"
     class="fixed top-4 left-4 z-50
+           flex items-center gap-2
            px-4 py-2 rounded-xl
            bg-black/80 border border-pink-500/50
            text-pink-400 text-sm font-semibold
@@ -56,7 +57,12 @@
            hover:shadow-[0_0_20px_#ec4899]
            transition-all duration-300"
   >
-    📩 Contact Admin
+    <!-- Instagram Logo -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+         fill="currentColor" class="w-5 h-5">
+      <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+    </svg>
+    Contact Admin
   </a>
 
   <div id="root"></div>
@@ -99,21 +105,6 @@
       return (
         <main className="max-w-6xl mx-auto px-4 py-10">
 
-          {/* HERO */}
-          <section className="text-center mb-12">
-            <img
-              src="og pirate.jpeg"
-              alt="The OG Pirate"
-              className="mx-auto w-48 h-48 object-cover rounded-full
-                         border-4 border-pink-500
-                         shadow-[0_0_40px_#ec4899]"
-            />
-            <h2 className="mt-4 text-2xl font-bold text-pink-400 tracking-widest">
-              THE OG PIRATE
-            </h2>
-          </section>
-
-          {/* HEADER */}
           <header className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-pink-500 mb-3">
               Medical Question Bank
@@ -123,7 +114,6 @@
             </p>
           </header>
 
-          {/* SEARCH BAR */}
           <div className="max-w-md mx-auto mb-12">
             <input
               type="text"
@@ -137,7 +127,6 @@
             />
           </div>
 
-          {/* CARDS */}
           <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
             {filteredCards.length > 0 ? (
               filteredCards.map((card, index) => (
@@ -153,17 +142,6 @@
             )}
           </section>
 
-          {/* INFO */}
-          <section className="bg-black/70 p-6 rounded-xl border border-pink-500/30 text-center mb-16">
-            <p className="text-gray-400">
-              Designed for serious aspirants preparing for
-              <span className="text-pink-400"> NEET PG </span>
-              and
-              <span className="text-cyan-400"> INI-CET</span>.
-            </p>
-          </section>
-
-          {/* FOOTER */}
           <footer className="text-center text-gray-600 text-xs">
             © 2026 Rikshit Joshi • Medical Question Bank
           </footer>
