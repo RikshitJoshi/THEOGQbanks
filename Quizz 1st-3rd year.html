@@ -476,7 +476,20 @@
                 padding: 16px;
             }
         }
-    </style>
+    
+/* === MOBILE UI PATCH (SAFE) === */
+body,html{overflow-x:hidden}
+.options-list li{padding:18px;font-size:1rem}
+.question-text{font-size:1.05rem;line-height:1.7}
+.question-text img,.explanation img{max-width:100%;height:auto}
+@media(max-width:768px){
+.header{position:sticky;top:0;z-index:30}
+.content-area{padding:14px}
+.sidebar{position:fixed;top:0;left:0;height:100vh;transform:translateX(-100%);z-index:40}
+.sidebar.open{transform:translateX(0)}
+}
+
+</style>
 </head>
 <body>
 
@@ -915,6 +928,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', init);
+</script>
+
+
+<script>
+function toggleSidebar(){
+  document.getElementById("sidebar").classList.toggle("open");
+}
 </script>
 
 </body>
