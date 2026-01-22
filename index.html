@@ -25,10 +25,19 @@
       border-radius: 1rem;
       border: 1px solid rgba(255,255,255,0.15);
       transition: all 0.3s ease;
+      display: block;
     }
     .card:hover {
       box-shadow: 0 0 25px currentColor;
       transform: translateY(-4px);
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.875rem;
+      color: #9ca3af;
     }
   </style>
 </head>
@@ -41,72 +50,73 @@
 
       const [search, setSearch] = React.useState("");
       const [menuOpen, setMenuOpen] = React.useState(false);
-      const [openCat, setOpenCat] = React.useState(null);
-      const searchRef = React.useRef(null);
+      const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
-      // Keyboard shortcut "/"
-      React.useEffect(() => {
-        const handler = (e) => {
-          if (e.key === "/") {
-            e.preventDefault();
-            searchRef.current.focus();
-          }
-        };
-        window.addEventListener("keydown", handler);
-        return () => window.removeEventListener("keydown", handler);
-      }, []);
+      const cards = [
+        { title: "Quizz(1st-3rd)", desc: "High-yield MCQs & PYQs.", link: "Quizz 1st-3rd year.html", color: "text-cyan-400" },
+        { title: "PrepX Anatomy", desc: "High-yield Anatomy MCQs & PYQs.", link: "prepX_Anatomy.html", color: "text-yellow-400" },
+        { title: "PrepX Physiology", desc: "Concept-based Physiology MCQs.", link: "PrepX_Physiology.html", color: "text-cyan-400" },
+        { title: "PrepX Biochemistry", desc: "Metabolism & molecular concepts.", link: "prepX_Biochemistry.html", color: "text-pink-400" },
+        { title: "PrepX Pathology", desc: "Images, mechanisms & PYQs.", link: "prepX_Pathology.html", color: "text-rose-400" },
+        { title: "PrepX Pharmacology", desc: "Drugs, MOA & adverse effects.", link: "prepX_Pharmacology.html", color: "text-green-400" },
+        { title: "PrepX Microbiology", desc: "Bacteria, viruses & parasites.", link: "prepX_Microbiology.html", color: "text-purple-400" },
+        { title: "PrepX PSM", desc: "Epidemiology & national programs.", link: "prepX_PSM.html", color: "text-orange-400" },
+        { title: "PrepX Medicine", desc: "Clinical concepts & MCQs.", link: "prepX_Medicine.html", color: "text-cyan-300" },
+        { title: "PrepX Surgery", desc: "General surgery & subspecialties.", link: "prepX_Surgery.html", color: "text-red-400" },
+        { title: "PrepX Orthopaedics", desc: "Trauma & bone disorders.", link: "prepX_Orthopaedics.html", color: "text-amber-400" },
+        { title: "PrepX Radiology", desc: "Imaging-based MCQs.", link: "prepX_Radiology.html", color: "text-sky-400" },
+        { title: "PrepX Psychiatry", desc: "Mental health & clinical MCQs.", link: "prepX_Psychiatry.html", color: "text-violet-400" },
+        { title: "PrepX Pediatrics", desc: "Neonatology & child health.", link: "prepX_Pediatrics.html", color: "text-teal-400" },
+        { title: "PrepX Dermatology", desc: "Skin disorders & images.", link: "prepX_Dermatology.html", color: "text-pink-300" },
+        { title: "PrepX ENT", desc: "Ear, nose & throat MCQs.", link: "prepX_ENT.html", color: "text-indigo-400" },
+        { title: "PrepX Ophthalmology", desc: "Eye disorders & PYQs.", link: "prepX_OPTHA.html", color: "text-blue-400" },
+        { title: "PrepX Anaesthesia", desc: "Airway, drugs & anesthesia basics.", link: "prepX_Anaesthesia.html", color: "text-emerald-400" },
+        { title: "PrepX OBGYN", desc: "Obstetrics & gynecology MCQs.", link: "prepX_OBSGYNAE.html", color: "text-rose-300" },
+        { title: "PrepX Forensic Medicine", desc: "Legal medicine & toxicology.", link: "prepX_FMT.html", color: "text-gray-300" },
+        { title: "PYQs NEET PG", desc: "Previous year NEET PG questions.", link: "PYQs-NEET-PG.html", color: "text-yellow-300" },
+        { title: "AIIMS 2014–2018", desc: "Previous year AIIMS questions.", link: "AIIMS 2014-2018.html", color: "text-yellow-300" },
+        { title: "Marrow Pearls", desc: "Concise high-yield digital flashcards.", link: "Marrow Pearls.html", color: "text-pink-300" }
+      ];
 
-      const categories = {
-        "Basic Sciences": [
-          ["PrepX Anatomy", "prepX_Anatomy.html", "text-yellow-400"],
-          ["PrepX Physiology", "PrepX_Physiology.html", "text-cyan-400"],
-          ["PrepX Biochemistry", "prepX_Biochemistry.html", "text-pink-400"],
-        ],
-        "Clinical Subjects": [
-          ["PrepX Medicine", "prepX_Medicine.html", "text-cyan-300"],
-          ["PrepX Surgery", "prepX_Surgery.html", "text-red-400"],
-          ["PrepX Pediatrics", "prepX_Pediatrics.html", "text-teal-400"],
-          ["PrepX OBGYN", "prepX_OBSGYNAE.html", "text-rose-300"],
-        ],
-        "Exams & Extras": [
-          ["PYQs NEET PG", "PYQs-NEET-PG.html", "text-yellow-300"],
-          ["AIIMS 2014–2018", "AIIMS 2014-2018.html", "text-yellow-300"],
-          ["Marrow Pearls", "Marrow Pearls.html", "text-pink-300"],
-        ]
-      };
-
-      const filtered = Object.entries(categories).map(([cat, items]) => [
-        cat,
-        items.filter(i => i[0].toLowerCase().includes(search.toLowerCase()))
-      ]).filter(([_, items]) => items.length > 0);
+      const filteredCards = cards.filter(card =>
+        card.title.toLowerCase().includes(search.toLowerCase())
+      );
 
       return (
         <>
           {/* NAVBAR */}
           <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-pink-500/30">
-            <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-              <div className="text-pink-400 font-bold tracking-widest">🏴‍☠️ OG PIRATE</div>
+            <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
 
-              {/* Animated Hamburger */}
-              <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden w-8 h-8 relative">
-                <span className={`absolute h-0.5 w-8 bg-pink-400 transition ${menuOpen ? "rotate-45 top-3.5" : "top-2"}`} />
-                <span className={`absolute h-0.5 w-8 bg-pink-400 transition ${menuOpen ? "opacity-0" : "top-4"}`} />
-                <span className={`absolute h-0.5 w-8 bg-pink-400 transition ${menuOpen ? "-rotate-45 top-3.5" : "top-6"}`} />
+              <div className="text-pink-400 font-bold tracking-widest">
+                🏴‍☠️ OG PIRATE
+              </div>
+
+              {/* DESKTOP */}
+              <div className="hidden md:flex items-center gap-6 text-sm font-semibold">
+                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="hover:text-pink-400">
+                  Subjects ▾
+                </button>
+
+                <a href="PYQs-NEET-PG.html" className="hover:text-pink-400">PYQs</a>
+
+                <a href="https://instagram.com/nameisrikshit" target="_blank"
+                   className="text-pink-400 hover:text-white">
+                  Admin
+                </a>
+              </div>
+
+              {/* HAMBURGER */}
+              <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-pink-400">
+                ☰
               </button>
-
-              {/* Desktop Admin */}
-              <a href="https://instagram.com/nameisrikshit" target="_blank"
-                 className="hidden md:block text-pink-400 hover:text-white">
-                Admin
-              </a>
             </div>
 
-            {/* Sticky Search */}
+            {/* STICKY SEARCH */}
             <div className="px-4 pb-3">
               <input
-                ref={searchRef}
                 type="text"
-                placeholder="Search subjects (press /)"
+                placeholder="Search subjects..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full max-w-md mx-auto block px-4 py-2 rounded-xl
@@ -115,23 +125,24 @@
               />
             </div>
 
-            {/* Mobile Menu */}
+            {/* DROPDOWN SUBJECTS */}
+            {dropdownOpen && (
+              <div className="hidden md:grid grid-cols-2 gap-2 px-6 pb-4 text-sm">
+                {cards.map((c, i) => (
+                  <a key={i} href={c.link} className="hover:text-pink-400">
+                    {c.title}
+                  </a>
+                ))}
+              </div>
+            )}
+
+            {/* MOBILE MENU */}
             {menuOpen && (
-              <div className="px-6 pb-4 space-y-3 text-sm">
-                {Object.entries(categories).map(([cat, items]) => (
-                  <div key={cat}>
-                    <button
-                      onClick={() => setOpenCat(openCat === cat ? null : cat)}
-                      className="w-full text-left font-semibold text-pink-400"
-                    >
-                      {cat}
-                    </button>
-                    {openCat === cat && items.map(([t, l]) => (
-                      <a key={t} href={l} className="block pl-4 py-1 hover:text-pink-400">
-                        {t}
-                      </a>
-                    ))}
-                  </div>
+              <div className="md:hidden px-6 pb-4 space-y-2 text-sm">
+                {cards.map((c, i) => (
+                  <a key={i} href={c.link} className="block hover:text-pink-400">
+                    {c.title}
+                  </a>
                 ))}
               </div>
             )}
@@ -139,18 +150,14 @@
 
           {/* CONTENT */}
           <main className="max-w-6xl mx-auto px-4 pt-40 pb-10">
-            {filtered.map(([cat, items]) => (
-              <section key={cat} className="mb-10">
-                <h2 className="text-pink-400 font-bold mb-4">{cat}</h2>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {items.map(([t, l, c]) => (
-                    <a key={t} href={l} className={`card ${c}`}>
-                      <h3 className="text-lg font-semibold">{t}</h3>
-                    </a>
-                  ))}
-                </div>
-              </section>
-            ))}
+            <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredCards.map((card, i) => (
+                <a key={i} href={card.link} className={`card ${card.color}`}>
+                  <h2>{card.title}</h2>
+                  <p>{card.desc}</p>
+                </a>
+              ))}
+            </section>
 
             <footer className="text-center text-gray-600 text-xs mt-16">
               © 2026 Rikshit Joshi • Medical Question Bank
