@@ -27,107 +27,55 @@
 
 <script type="text/babel">
 
-const SUBJECTS = [
-  "Anatomy","Physiology","Biochemistry","Pathology",
-  "Pharmacology","Microbiology","PSM","Medicine",
-  "Surgery","OBG","Pediatrics"
-];
-
-function saveProgress(subject, value) {
-  const data = JSON.parse(localStorage.getItem("progress") || "{}");
-  data[subject] = value;
-  localStorage.setItem("progress", JSON.stringify(data));
-}
-
-function getProgress(subject) {
-  const data = JSON.parse(localStorage.getItem("progress") || "{}");
-  return data[subject] || 0;
-}
-
 function App() {
-  const [page, setPage] = React.useState("home");
-  const [activeSubject, setActiveSubject] = React.useState(null);
-
   return (
-    <main className="max-w-6xl mx-auto px-4 py-6">
+    <main className="max-w-5xl mx-auto px-4 py-10">
 
       {/* HEADER */}
-      <header className="mb-6">
-        <h1 className="text-xl font-bold text-pink-500">
+      <header className="text-center mb-16">
+        <h1 className="text-3xl md:text-4xl font-bold text-pink-500 mb-3">
           NEET PG / INI-CET Question Bank
         </h1>
-        <p className="text-xs text-gray-500">
-          Subject-wise MCQs • PYQs • Progress Tracking
+        <p className="text-gray-400">
+          High-yield MCQs • PYQs • Concept-based explanations
         </p>
       </header>
 
-      {/* HOME */}
-      {page === "home" && (
-        <>
-          <section className="mb-10">
-            <h2 className="text-2xl text-cyan-400 mb-4">Subjects</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {SUBJECTS.map(sub => (
-                <div key={sub}
-                  onClick={() => { setActiveSubject(sub); setPage("subject"); }}
-                  className="bg-black/60 p-4 rounded-xl border border-cyan-400/30
-                             hover:scale-105 transition cursor-pointer">
-                  <h3 className="text-sm">{sub}</h3>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Progress: {getProgress(sub)}%
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
+      {/* MAIN CONTENT */}
+      <section className="grid sm:grid-cols-2 gap-6 mb-16">
 
-          <section>
-            <h2 className="text-2xl text-pink-500 mb-4">Overall Progress</h2>
-            <div className="bg-black/70 p-6 rounded-xl border border-pink-500/30">
-              <p className="text-gray-400">
-                Your progress is saved automatically on this device.
-              </p>
-            </div>
-          </section>
-        </>
-      )}
-
-      {/* SUBJECT PAGE */}
-      {page === "subject" && (
-        <section>
-          <button onClick={() => setPage("home")}
-            className="text-sm text-gray-400 mb-4">
-            ← Back to Subjects
-          </button>
-
-          <h2 className="text-2xl text-emerald-400 mb-2">
-            {activeSubject}
+        <div className="bg-black/70 p-6 rounded-xl border border-cyan-400/30 hover:shadow-[0_0_25px_#22d3ee] transition">
+          <h2 className="text-xl text-cyan-400 mb-2">
+            NEET PG Question Bank
           </h2>
-          <p className="text-gray-500 mb-6">
-            Topic-wise MCQs • PYQs • Explanations
+          <p className="text-gray-400 text-sm">
+            Exam-oriented MCQs with previous year questions and concise explanations.
           </p>
+        </div>
 
-          <div className="bg-black/70 p-6 rounded-xl border border-emerald-400/30">
-            <p className="mb-4">Mark progress after solving questions:</p>
+        <div className="bg-black/70 p-6 rounded-xl border border-emerald-400/30 hover:shadow-[0_0_25px_#34d399] transition">
+          <h2 className="text-xl text-emerald-400 mb-2">
+            INI-CET Question Bank
+          </h2>
+          <p className="text-gray-400 text-sm">
+            Concept-heavy and integrated questions following AIIMS pattern.
+          </p>
+        </div>
 
-            <input
-              type="range"
-              min="0"
-              max="100"
-              defaultValue={getProgress(activeSubject)}
-              onChange={(e) => saveProgress(activeSubject, e.target.value)}
-              className="w-full accent-emerald-400"
-            />
+      </section>
 
-            <p className="text-sm text-gray-400 mt-2">
-              Progress auto-saved ✔
-            </p>
-          </div>
-        </section>
-      )}
+      {/* INFO SECTION */}
+      <section className="bg-black/70 p-6 rounded-xl border border-pink-500/30 text-center mb-16">
+        <p className="text-gray-400">
+          Designed for serious aspirants preparing for
+          <span className="text-pink-400"> NEET PG </span>
+          and
+          <span className="text-cyan-400"> INI-CET</span>.
+        </p>
+      </section>
 
       {/* FOOTER */}
-      <footer className="text-center text-gray-600 text-xs mt-16">
+      <footer className="text-center text-gray-600 text-xs">
         © 2026 Rikshit Joshi • Medical Question Bank
       </footer>
 
