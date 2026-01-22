@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Rikshit Joshi | Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- React CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Neon Theme -->
+  <style>
+    body {
+      background: radial-gradient(circle at top, #020617, #000);
+    }
+  </style>
+</head>
+
+<body class="text-gray-200">
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function App() {
+      return (
+        <main className="min-h-screen px-4 py-10 max-w-5xl mx-auto">
+
+          {/* HERO */}
+          <section className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-cyan-400 drop-shadow-[0_0_25px_#22d3ee] animate-pulse">
+              Rikshit Joshi
+            </h1>
+            <p className="mt-4 text-lg text-gray-400">
+              Web Developer • Learner • Creator
+            </p>
+
+            <div className="mt-6 flex justify-center gap-4">
+              <a href="https://github.com/Rikshitjoshi" target="_blank"
+                className="px-5 py-2 border border-cyan-400 rounded-lg text-cyan-400 hover:bg-cyan-400 hover:text-black transition">
+                GitHub
+              </a>
+              <a href="#" className="px-5 py-2 border border-pink-500 rounded-lg text-pink-500 hover:bg-pink-500 hover:text-black transition">
+                Resume
+              </a>
+            </div>
+          </section>
+
+          {/* ABOUT */}
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-pink-500 mb-3">
+              About Me
+            </h2>
+            <p className="text-gray-400 leading-relaxed">
+              I’m a passionate developer focused on building fast, modern,
+              and visually striking web experiences. I enjoy learning new
+              tech and pushing UI limits with animations and neon aesthetics.
+            </p>
+          </section>
+
+          {/* SKILLS */}
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-cyan-400 mb-4">
+              Skills
+            </h2>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {["HTML", "CSS", "JavaScript", "React", "Tailwind", "GitHub"].map(skill => (
+                <div key={skill}
+                  className="bg-black/60 border border-cyan-400/30 rounded-xl p-4 text-center hover:scale-105 transition shadow-[0_0_20px_#22d3ee40]">
+                  {skill}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* PROJECTS */}
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-pink-500 mb-4">
+              Projects
+            </h2>
+
+            <div className="grid sm:grid-cols-2 gap-6">
+              {[
+                { title: "Project One", desc: "React based UI project" },
+                { title: "Project Two", desc: "Automation / Tooling app" }
+              ].map(p => (
+                <div key={p.title}
+                  className="bg-black/70 p-6 rounded-xl border border-pink-500/30 hover:shadow-[0_0_25px_#ec489940] transition">
+                  <h3 className="text-xl text-pink-400 mb-2">{p.title}</h3>
+                  <p className="text-gray-400">{p.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* RESUME */}
+          <section className="mb-14">
+            <h2 className="text-2xl font-semibold text-cyan-400 mb-3">
+              Resume
+            </h2>
+            <p className="text-gray-400">
+              Download my resume to learn more about my education,
+              experience, and achievements.
+            </p>
+
+            <a href="#" className="inline-block mt-4 px-6 py-2 bg-cyan-400 text-black rounded-lg hover:shadow-[0_0_25px_#22d3ee] transition">
+              Download Resume
+            </a>
+          </section>
+
+          {/* FOOTER */}
+          <footer className="text-center text-gray-500 text-sm mt-20">
+            © 2026 Rikshit Joshi • Built with React ⚛️ + Tailwind 🌈
+          </footer>
+
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
