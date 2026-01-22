@@ -29,7 +29,7 @@
 
 function App() {
   return (
-    <main className="max-w-5xl mx-auto px-4 py-10">
+    <main className="max-w-6xl mx-auto px-4 py-10">
 
       {/* HEADER */}
       <header className="text-center mb-16">
@@ -41,30 +41,46 @@ function App() {
         </p>
       </header>
 
-      {/* MAIN CONTENT */}
-      <section className="grid sm:grid-cols-2 gap-6 mb-16">
+      {/* MAIN CARDS */}
+      <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
 
+        {/* NEET PG */}
         <div className="bg-black/70 p-6 rounded-xl border border-cyan-400/30 hover:shadow-[0_0_25px_#22d3ee] transition">
           <h2 className="text-xl text-cyan-400 mb-2">
             NEET PG Question Bank
           </h2>
           <p className="text-gray-400 text-sm">
-            Exam-oriented MCQs with previous year questions and concise explanations.
+            Exam-oriented MCQs with PYQs and crisp explanations.
           </p>
         </div>
 
+        {/* INI-CET */}
         <div className="bg-black/70 p-6 rounded-xl border border-emerald-400/30 hover:shadow-[0_0_25px_#34d399] transition">
           <h2 className="text-xl text-emerald-400 mb-2">
             INI-CET Question Bank
           </h2>
           <p className="text-gray-400 text-sm">
-            Concept-heavy and integrated questions following AIIMS pattern.
+            Concept-heavy integrated questions following AIIMS pattern.
           </p>
         </div>
 
+        {/* PREPX ANATOMY */}
+        <a href="prepX_Anatomy.html"
+           className="bg-black/70 p-6 rounded-xl border border-yellow-400/30
+                      hover:shadow-[0_0_25px_#facc15] transition block">
+
+          <h2 className="text-xl text-yellow-400 mb-2">
+            PrepX Anatomy
+          </h2>
+          <p className="text-gray-400 text-sm">
+            High-yield Anatomy MCQs, diagrams & PYQs for NEET PG / INI-CET.
+          </p>
+
+        </a>
+
       </section>
 
-      {/* INFO SECTION */}
+      {/* INFO */}
       <section className="bg-black/70 p-6 rounded-xl border border-pink-500/30 text-center mb-16">
         <p className="text-gray-400">
           Designed for serious aspirants preparing for
