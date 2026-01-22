@@ -45,52 +45,20 @@ function getProgress(subject) {
 }
 
 function App() {
-  const [user, setUser] = React.useState(localStorage.getItem("user"));
   const [page, setPage] = React.useState("home");
   const [activeSubject, setActiveSubject] = React.useState(null);
-
-  function login() {
-    localStorage.setItem("user", "medical_user");
-    setUser("medical_user");
-  }
-
-  function logout() {
-    localStorage.clear();
-    setUser(null);
-    setPage("home");
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="bg-black/70 p-8 rounded-xl border border-cyan-400 w-full max-w-sm">
-          <h1 className="text-2xl text-cyan-400 text-center mb-4">
-            Medical QBank Login
-          </h1>
-          <button onClick={login}
-            className="w-full py-2 bg-cyan-400 text-black rounded-lg hover:shadow-[0_0_20px_#22d3ee] transition">
-            Login (Demo)
-          </button>
-          <p className="text-xs text-gray-500 text-center mt-3">
-            Demo login using LocalStorage
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-6">
 
       {/* HEADER */}
-      <header className="flex justify-between items-center mb-6">
+      <header className="mb-6">
         <h1 className="text-xl font-bold text-pink-500">
-          NEET PG / INI-CET QBank
+          NEET PG / INI-CET Question Bank
         </h1>
-        <button onClick={logout}
-          className="text-sm text-gray-400 hover:text-red-400">
-          Logout
-        </button>
+        <p className="text-xs text-gray-500">
+          Subject-wise MCQs • PYQs • Progress Tracking
+        </p>
       </header>
 
       {/* HOME */}
@@ -117,7 +85,7 @@ function App() {
             <h2 className="text-2xl text-pink-500 mb-4">Overall Progress</h2>
             <div className="bg-black/70 p-6 rounded-xl border border-pink-500/30">
               <p className="text-gray-400">
-                Track your preparation subject-wise. Progress auto-saves.
+                Your progress is saved automatically on this device.
               </p>
             </div>
           </section>
@@ -129,7 +97,7 @@ function App() {
         <section>
           <button onClick={() => setPage("home")}
             className="text-sm text-gray-400 mb-4">
-            ← Back
+            ← Back to Subjects
           </button>
 
           <h2 className="text-2xl text-emerald-400 mb-2">
@@ -142,10 +110,14 @@ function App() {
           <div className="bg-black/70 p-6 rounded-xl border border-emerald-400/30">
             <p className="mb-4">Mark progress after solving questions:</p>
 
-            <input type="range" min="0" max="100"
+            <input
+              type="range"
+              min="0"
+              max="100"
               defaultValue={getProgress(activeSubject)}
               onChange={(e) => saveProgress(activeSubject, e.target.value)}
-              className="w-full accent-emerald-400" />
+              className="w-full accent-emerald-400"
+            />
 
             <p className="text-sm text-gray-400 mt-2">
               Progress auto-saved ✔
@@ -156,7 +128,7 @@ function App() {
 
       {/* FOOTER */}
       <footer className="text-center text-gray-600 text-xs mt-16">
-        © 2026 Rikshit Joshi • Medical Question Bank MVP
+        © 2026 Rikshit Joshi • Medical Question Bank
       </footer>
 
     </main>
