@@ -47,10 +47,42 @@
 
   <script type="text/babel">
     function App() {
+
+      const [search, setSearch] = React.useState("");
+
+      const cards = [
+        { title: "PrepX Anatomy", desc: "High-yield Anatomy MCQs & PYQs.", link: "prepX_Anatomy.html", color: "text-yellow-400" },
+        { title: "PrepX Physiology", desc: "Concept-based Physiology MCQs.", link: "PrepX_Physiology.html", color: "text-cyan-400" },
+        { title: "PrepX Biochemistry", desc: "Metabolism & molecular concepts.", link: "prepX_Biochemistry.html", color: "text-pink-400" },
+        { title: "PrepX Pathology", desc: "Images, mechanisms & PYQs.", link: "prepX_Pathology.html", color: "text-rose-400" },
+        { title: "PrepX Pharmacology", desc: "Drugs, MOA & adverse effects.", link: "prepX_Pharmacology.html", color: "text-green-400" },
+        { title: "PrepX Microbiology", desc: "Bacteria, viruses & parasites.", link: "prepX_Microbiology.html", color: "text-purple-400" },
+        { title: "PrepX PSM", desc: "Epidemiology & national programs.", link: "prepX_PSM.html", color: "text-orange-400" },
+        { title: "PrepX Medicine", desc: "Clinical concepts & MCQs.", link: "prepX_Medicine.html", color: "text-cyan-300" },
+        { title: "PrepX Surgery", desc: "General surgery & subspecialties.", link: "prepX_Surgery.html", color: "text-red-400" },
+        { title: "PrepX Orthopaedics", desc: "Trauma & bone disorders.", link: "prepX_Orthopaedics.html", color: "text-amber-400" },
+        { title: "PrepX Radiology", desc: "Imaging-based MCQs.", link: "prepX_Radiology.html", color: "text-sky-400" },
+        { title: "PrepX Psychiatry", desc: "Mental health & clinical MCQs.", link: "prepX_Psychiatry.html", color: "text-violet-400" },
+        { title: "PrepX Pediatrics", desc: "Neonatology & child health.", link: "prepX_Pediatrics.html", color: "text-teal-400" },
+        { title: "PrepX Dermatology", desc: "Skin disorders & images.", link: "prepX_Dermatology.html", color: "text-pink-300" },
+        { title: "PrepX ENT", desc: "Ear, nose & throat MCQs.", link: "prepX_ENT.html", color: "text-indigo-400" },
+        { title: "PrepX Ophthalmology", desc: "Eye disorders & PYQs.", link: "prepX_OPTHA.html", color: "text-blue-400" },
+        { title: "PrepX Anaesthesia", desc: "Airway, drugs & anesthesia basics.", link: "prepX_Anaesthesia.html", color: "text-emerald-400" },
+        { title: "PrepX OBGYN", desc: "Obstetrics & gynecology MCQs.", link: "prepX_OBSGYNAE.html", color: "text-rose-300" },
+        { title: "PrepX Forensic Medicine", desc: "Legal medicine & toxicology.", link: "prepX_FMT.html", color: "text-gray-300" },
+        { title: "PYQs NEET PG", desc: "Previous year NEET PG questions.", link: "PYQs-NEET-PG.html", color: "text-yellow-300" },
+        { title: "AIIMS 2014–2018", desc: "Previous year AIIMS questions.", link: "AIIMS 2014-2018.html", color: "text-yellow-300" },
+        { title: "Marrow Pearls", desc: "Concise high-yield digital flashcards.", link: "Marrow Pearls.html", color: "text-pink-300" },
+      ];
+
+      const filteredCards = cards.filter(card =>
+        card.title.toLowerCase().includes(search.toLowerCase())
+      );
+
       return (
         <main className="max-w-6xl mx-auto px-4 py-10">
 
-          {/* HERO IMAGE */}
+          {/* HERO */}
           <section className="text-center mb-12">
             <img
               src="og pirate.jpeg"
@@ -65,7 +97,7 @@
           </section>
 
           {/* HEADER */}
-          <header className="text-center mb-16">
+          <header className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-bold text-pink-500 mb-3">
               Medical Question Bank
             </h1>
@@ -74,119 +106,34 @@
             </p>
           </header>
 
-          {/* MAIN CARDS */}
+          {/* SEARCH BAR */}
+          <div className="max-w-md mx-auto mb-12">
+            <input
+              type="text"
+              placeholder="Search subjects, PYQs, pearls..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl bg-black/70
+                         border border-pink-500/40
+                         text-gray-200 placeholder-gray-500
+                         focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+          </div>
+
+          {/* CARDS */}
           <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-
-            <a href="prepX_Anatomy.html" className="card text-yellow-400">
-              <h2>PrepX Anatomy</h2>
-              <p>High-yield Anatomy MCQs & PYQs.</p>
-            </a>
-
-            <a href="PrepX_Physiology.html" className="card text-cyan-400">
-              <h2>PrepX Physiology</h2>
-              <p>Concept-based Physiology MCQs.</p>
-            </a>
-
-            <a href="prepX_Biochemistry.html" className="card text-pink-400">
-              <h2>PrepX Biochemistry</h2>
-              <p>Metabolism & molecular concepts.</p>
-            </a>
-
-            <a href="prepX_Pathology.html" className="card text-rose-400">
-              <h2>PrepX Pathology</h2>
-              <p>Images, mechanisms & PYQs.</p>
-            </a>
-
-            <a href="prepX_Pharmacology.html" className="card text-green-400">
-              <h2>PrepX Pharmacology</h2>
-              <p>Drugs, MOA & adverse effects.</p>
-            </a>
-
-            <a href="prepX_Microbiology.html" className="card text-purple-400">
-              <h2>PrepX Microbiology</h2>
-              <p>Bacteria, viruses & parasites.</p>
-            </a>
-
-            <a href="prepX_PSM.html" className="card text-orange-400">
-              <h2>PrepX PSM</h2>
-              <p>Epidemiology & national programs.</p>
-            </a>
-
-            <a href="prepX_Medicine.html" className="card text-cyan-300">
-              <h2>PrepX Medicine</h2>
-              <p>Clinical concepts & MCQs.</p>
-            </a>
-
-            <a href="prepX_Surgery.html" className="card text-red-400">
-              <h2>PrepX Surgery</h2>
-              <p>General surgery & subspecialties.</p>
-            </a>
-
-            <a href="prepX_Orthopaedics.html" className="card text-amber-400">
-              <h2>PrepX Orthopaedics</h2>
-              <p>Trauma & bone disorders.</p>
-            </a>
-
-            <a href="prepX_Radiology.html" className="card text-sky-400">
-              <h2>PrepX Radiology</h2>
-              <p>Imaging-based MCQs.</p>
-            </a>
-
-            <a href="prepX_Psychiatry.html" className="card text-violet-400">
-              <h2>PrepX Psychiatry</h2>
-              <p>Mental health & clinical MCQs.</p>
-            </a>
-
-            <a href="prepX_Pediatrics.html" className="card text-teal-400">
-              <h2>PrepX Pediatrics</h2>
-              <p>Neonatology & child health.</p>
-            </a>
-
-            <a href="prepX_Dermatology.html" className="card text-pink-300">
-              <h2>PrepX Dermatology</h2>
-              <p>Skin disorders & images.</p>
-            </a>
-
-            <a href="prepX_ENT.html" className="card text-indigo-400">
-              <h2>PrepX ENT</h2>
-              <p>Ear, nose & throat MCQs.</p>
-            </a>
-
-            <a href="prepX_OPTHA.html" className="card text-blue-400">
-              <h2>PrepX Ophthalmology</h2>
-              <p>Eye disorders & PYQs.</p>
-            </a>
-
-            <a href="prepX_Anaesthesia.html" className="card text-emerald-400">
-              <h2>PrepX Anaesthesia</h2>
-              <p>Airway, drugs & anesthesia basics.</p>
-            </a>
-
-            <a href="prepX_OBSGYNAE.html" className="card text-rose-300">
-              <h2>PrepX OBGYN</h2>
-              <p>Obstetrics & gynecology MCQs.</p>
-            </a>
-
-            <a href="prepX_FMT.html" className="card text-gray-300">
-              <h2>PrepX Forensic Medicine</h2>
-              <p>Legal medicine & toxicology.</p>
-            </a>
-
-            <a href="PYQs-NEET-PG.html" className="card text-yellow-300">
-              <h2>PYQs NEET PG</h2>
-              <p>Previous year NEET PG questions.</p>
-            </a>
-
-            <a href="AIIMS 2014-2018.html" className="card text-yellow-300">
-              <h2>AIIMS 2014–2018</h2>
-              <p>Previous year AIIMS questions.</p>
-            </a>
-
-             <a href="Marrow Pearls.html" className="card text-pink-300">
-              <h2>Marrow Pearls</h2>
-              <p>Marrow Pearls are concise, high-yield revision notes and key facts within the Marrow medical education platform, acting like digital flashcards.</p>
-            </a>
-
+            {filteredCards.length > 0 ? (
+              filteredCards.map((card, index) => (
+                <a key={index} href={card.link} className={`card ${card.color}`}>
+                  <h2>{card.title}</h2>
+                  <p>{card.desc}</p>
+                </a>
+              ))
+            ) : (
+              <p className="text-center text-gray-500 col-span-full">
+                No matching subjects found.
+              </p>
+            )}
           </section>
 
           {/* INFO */}
