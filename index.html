@@ -43,14 +43,45 @@
 </head>
 
 <body class="text-gray-200">
+
+  <!-- NAVBAR / MENU -->
+  <nav class="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-pink-500/30">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      
+      <!-- Logo / Title -->
+      <div class="text-pink-400 font-bold tracking-widest">
+        🏴‍☠️ OG PIRATE
+      </div>
+
+      <!-- Menu Items -->
+      <div class="flex gap-6 text-sm font-semibold">
+        <a href="#" class="hover:text-pink-400 transition">Home</a>
+        <a href="#subjects" class="hover:text-pink-400 transition">Subjects</a>
+        <a href="PYQs-NEET-PG.html" class="hover:text-pink-400 transition">PYQs</a>
+
+        <!-- Instagram -->
+        <a
+          href="https://instagram.com/nameisrikshit"
+          target="_blank"
+          class="flex items-center gap-1 text-pink-400 hover:text-white transition"
+        >
+          <!-- Instagram Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="currentColor" class="w-4 h-4">
+            <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+          </svg>
+          Admin
+        </a>
+      </div>
+    </div>
+  </nav>
+
   <div id="root"></div>
 
   <script type="text/babel">
     function App() {
 
       const [search, setSearch] = React.useState("");
-      const [menuOpen, setMenuOpen] = React.useState(false);
-      const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
       const cards = [
         { title: "Quizz(1st-3rd)", desc: "High-yield MCQs & PYQs.", link: "Quizz 1st-3rd year.html", color: "text-cyan-400" },
@@ -75,7 +106,7 @@
         { title: "PrepX Forensic Medicine", desc: "Legal medicine & toxicology.", link: "prepX_FMT.html", color: "text-gray-300" },
         { title: "PYQs NEET PG", desc: "Previous year NEET PG questions.", link: "PYQs-NEET-PG.html", color: "text-yellow-300" },
         { title: "AIIMS 2014–2018", desc: "Previous year AIIMS questions.", link: "AIIMS 2014-2018.html", color: "text-yellow-300" },
-        { title: "Marrow Pearls", desc: "Concise high-yield digital flashcards.", link: "Marrow Pearls.html", color: "text-pink-300" }
+        { title: "Marrow Pearls", desc: "Concise high-yield digital flashcards.", link: "Marrow Pearls.html", color: "text-pink-300" },
       ];
 
       const filteredCards = cards.filter(card =>
@@ -83,87 +114,44 @@
       );
 
       return (
-        <>
-          {/* NAVBAR */}
-          <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur border-b border-pink-500/30">
-            <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <main className="max-w-6xl mx-auto px-4 py-24">
 
-              <div className="text-pink-400 font-bold tracking-widest">
-                🏴‍☠️ OG PIRATE
-              </div>
+          <header className="text-center mb-10">
+            <h1 className="text-3xl md:text-4xl font-bold text-pink-500 mb-3">
+              Medical Question Bank
+            </h1>
+            <p className="text-gray-400">
+              High-yield MCQs • PYQs • Concept-based explanations
+            </p>
+          </header>
 
-              {/* DESKTOP */}
-              <div className="hidden md:flex items-center gap-6 text-sm font-semibold">
-                <button onClick={() => setDropdownOpen(!dropdownOpen)} className="hover:text-pink-400">
-                  Subjects ▾
-                </button>
+          <div className="max-w-md mx-auto mb-12">
+            <input
+              type="text"
+              placeholder="Search subjects, PYQs, pearls..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl bg-black/70
+                         border border-pink-500/40
+                         text-gray-200 placeholder-gray-500
+                         focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
+          </div>
 
-                <a href="PYQs-NEET-PG.html" className="hover:text-pink-400">PYQs</a>
+          <section id="subjects" className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            {filteredCards.map((card, index) => (
+              <a key={index} href={card.link} className={`card ${card.color}`}>
+                <h2>{card.title}</h2>
+                <p>{card.desc}</p>
+              </a>
+            ))}
+          </section>
 
-                <a href="https://instagram.com/nameisrikshit" target="_blank"
-                   className="text-pink-400 hover:text-white">
-                  Admin
-                </a>
-              </div>
+          <footer className="text-center text-gray-600 text-xs">
+            © 2026 Rikshit Joshi • Medical Question Bank
+          </footer>
 
-              {/* HAMBURGER */}
-              <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-pink-400">
-                ☰
-              </button>
-            </div>
-
-            {/* STICKY SEARCH */}
-            <div className="px-4 pb-3">
-              <input
-                type="text"
-                placeholder="Search subjects..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full max-w-md mx-auto block px-4 py-2 rounded-xl
-                           bg-black/70 border border-pink-500/40
-                           focus:ring-2 focus:ring-pink-500 outline-none"
-              />
-            </div>
-
-            {/* DROPDOWN SUBJECTS */}
-            {dropdownOpen && (
-              <div className="hidden md:grid grid-cols-2 gap-2 px-6 pb-4 text-sm">
-                {cards.map((c, i) => (
-                  <a key={i} href={c.link} className="hover:text-pink-400">
-                    {c.title}
-                  </a>
-                ))}
-              </div>
-            )}
-
-            {/* MOBILE MENU */}
-            {menuOpen && (
-              <div className="md:hidden px-6 pb-4 space-y-2 text-sm">
-                {cards.map((c, i) => (
-                  <a key={i} href={c.link} className="block hover:text-pink-400">
-                    {c.title}
-                  </a>
-                ))}
-              </div>
-            )}
-          </nav>
-
-          {/* CONTENT */}
-          <main className="max-w-6xl mx-auto px-4 pt-40 pb-10">
-            <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCards.map((card, i) => (
-                <a key={i} href={card.link} className={`card ${card.color}`}>
-                  <h2>{card.title}</h2>
-                  <p>{card.desc}</p>
-                </a>
-              ))}
-            </section>
-
-            <footer className="text-center text-gray-600 text-xs mt-16">
-              © 2026 Rikshit Joshi • Medical Question Bank
-            </footer>
-          </main>
-        </>
+        </main>
       );
     }
 
