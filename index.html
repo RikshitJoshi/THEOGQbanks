@@ -1,104 +1,190 @@
-{/* MAIN CARD */}
-<section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Question Bank | NEET PG & INI-CET</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <a href="prepX_Anatomy.html" className="card text-yellow-400">
-    <h2>PrepX Anatomy</h2>
-    <p>High-yield Anatomy MCQs & PYQs.</p>
-  </a>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <a href="prepX_Physiology.html" className="card text-cyan-400">
-    <h2>PrepX Physiology</h2>
-    <p>Concept-based Physiology MCQs.</p>
-  </a>
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-  <a href="prepX_Biochemistry.html" className="card text-pink-400">
-    <h2>PrepX Biochemistry</h2>
-    <p>Metabolism & molecular concepts.</p>
-  </a>
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <a href="prepX_Pathology.html" className="card text-rose-400">
-    <h2>PrepX Pathology</h2>
-    <p>Images, mechanisms & PYQs.</p>
-  </a>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #020617, #000);
+    }
+    .card {
+      background: rgba(0,0,0,0.7);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: all 0.3s ease;
+      display: block;
+    }
+    .card:hover {
+      box-shadow: 0 0 25px currentColor;
+      transform: translateY(-4px);
+    }
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .card p {
+      font-size: 0.875rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
 
-  <a href="prepX_Pharmacology.html" className="card text-green-400">
-    <h2>PrepX Pharmacology</h2>
-    <p>Drugs, MOA & adverse effects.</p>
-  </a>
+<body class="text-gray-200">
+  <div id="root"></div>
 
-  <a href="prepX_Microbiology.html" className="card text-purple-400">
-    <h2>PrepX Microbiology</h2>
-    <p>Bacteria, viruses & parasites.</p>
-  </a>
+  <script type="text/babel">
+    function App() {
+      return (
+        <main className="max-w-6xl mx-auto px-4 py-10">
 
-  <a href="prepX_PSM.html" className="card text-orange-400">
-    <h2>PrepX PSM</h2>
-    <p>Epidemiology & national programs.</p>
-  </a>
+          {/* HEADER */}
+          <header className="text-center mb-16">
+            <h1 className="text-3xl md:text-4xl font-bold text-pink-500 mb-3">
+              Medical Question Bank
+            </h1>
+            <p className="text-gray-400">
+              High-yield MCQs • PYQs • Concept-based explanations
+            </p>
+          </header>
 
-  <a href="prepX_Medicine.html" className="card text-cyan-300">
-    <h2>PrepX Medicine</h2>
-    <p>Clinical concepts & MCQs.</p>
-  </a>
+          {/* MAIN CARD */}
+          <section className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
 
-  <a href="prepX_Surgery.html" className="card text-red-400">
-    <h2>PrepX Surgery</h2>
-    <p>General surgery & subspecialties.</p>
-  </a>
+            <a href="prepX_Anatomy.html" className="card text-yellow-400">
+              <h2>PrepX Anatomy</h2>
+              <p>High-yield Anatomy MCQs & PYQs.</p>
+            </a>
 
-  <a href="prepX_Orthopaedics.html" className="card text-amber-400">
-    <h2>PrepX Orthopaedics</h2>
-    <p>Trauma & bone disorders.</p>
-  </a>
+            <a href="prepX_Physiology.html" className="card text-cyan-400">
+              <h2>PrepX Physiology</h2>
+              <p>Concept-based Physiology MCQs.</p>
+            </a>
 
-  <a href="prepX_Radiology.html" className="card text-sky-400">
-    <h2>PrepX Radiology</h2>
-    <p>Imaging-based MCQs.</p>
-  </a>
+            <a href="prepX_Biochemistry.html" className="card text-pink-400">
+              <h2>PrepX Biochemistry</h2>
+              <p>Metabolism & molecular concepts.</p>
+            </a>
 
-  <a href="prepX_Psychiatry.html" className="card text-violet-400">
-    <h2>PrepX Psychiatry</h2>
-    <p>Mental health & clinical MCQs.</p>
-  </a>
+            <a href="prepX_Pathology.html" className="card text-rose-400">
+              <h2>PrepX Pathology</h2>
+              <p>Images, mechanisms & PYQs.</p>
+            </a>
 
-  <a href="prepX_Pediatrics.html" className="card text-teal-400">
-    <h2>PrepX Pediatrics</h2>
-    <p>Neonatology & child health.</p>
-  </a>
+            <a href="prepX_Pharmacology.html" className="card text-green-400">
+              <h2>PrepX Pharmacology</h2>
+              <p>Drugs, MOA & adverse effects.</p>
+            </a>
 
-  <a href="prepX_Dermatology.html" className="card text-pink-300">
-    <h2>PrepX Dermatology</h2>
-    <p>Skin disorders & images.</p>
-  </a>
+            <a href="prepX_Microbiology.html" className="card text-purple-400">
+              <h2>PrepX Microbiology</h2>
+              <p>Bacteria, viruses & parasites.</p>
+            </a>
 
-  <a href="prepX_ENT.html" className="card text-indigo-400">
-    <h2>PrepX ENT</h2>
-    <p>Ear, nose & throat MCQs.</p>
-  </a>
+            <a href="prepX_PSM.html" className="card text-orange-400">
+              <h2>PrepX PSM</h2>
+              <p>Epidemiology & national programs.</p>
+            </a>
 
-  <a href="prepX_OPTHA.html" className="card text-blue-400">
-    <h2>PrepX Ophthalmology</h2>
-    <p>Eye disorders & PYQs.</p>
-  </a>
+            <a href="prepX_Medicine.html" className="card text-cyan-300">
+              <h2>PrepX Medicine</h2>
+              <p>Clinical concepts & MCQs.</p>
+            </a>
 
-  <a href="prepX_Anaesthesia.html" className="card text-emerald-400">
-    <h2>PrepX Anaesthesia</h2>
-    <p>Airway, drugs & anesthesia basics.</p>
-  </a>
+            <a href="prepX_Surgery.html" className="card text-red-400">
+              <h2>PrepX Surgery</h2>
+              <p>General surgery & subspecialties.</p>
+            </a>
 
-  <a href="prepX_OBSGYNAE.html" className="card text-rose-300">
-    <h2>PrepX OBGYN</h2>
-    <p>Obstetrics & gynecology MCQs.</p>
-  </a>
+            <a href="prepX_Orthopaedics.html" className="card text-amber-400">
+              <h2>PrepX Orthopaedics</h2>
+              <p>Trauma & bone disorders.</p>
+            </a>
 
-  <a href="prepX_FMT.html" className="card text-gray-300">
-    <h2>PrepX Forensic Medicine</h2>
-    <p>Legal medicine & toxicology.</p>
-  </a>
+            <a href="prepX_Radiology.html" className="card text-sky-400">
+              <h2>PrepX Radiology</h2>
+              <p>Imaging-based MCQs.</p>
+            </a>
 
-  <a href="PYQs-NEET-PG.html" className="card text-yellow-300">
-    <h2>NEET PG PYQs</h2>
-    <p>Previous year NEET PG questions.</p>
-  </a>
+            <a href="prepX_Psychiatry.html" className="card text-violet-400">
+              <h2>PrepX Psychiatry</h2>
+              <p>Mental health & clinical MCQs.</p>
+            </a>
 
-</section>
+            <a href="prepX_Pediatrics.html" className="card text-teal-400">
+              <h2>PrepX Pediatrics</h2>
+              <p>Neonatology & child health.</p>
+            </a>
+
+            <a href="prepX_Dermatology.html" className="card text-pink-300">
+              <h2>PrepX Dermatology</h2>
+              <p>Skin disorders & images.</p>
+            </a>
+
+            <a href="prepX_ENT.html" className="card text-indigo-400">
+              <h2>PrepX ENT</h2>
+              <p>Ear, nose & throat MCQs.</p>
+            </a>
+
+            <a href="prepX_OPTHA.html" className="card text-blue-400">
+              <h2>PrepX Ophthalmology</h2>
+              <p>Eye disorders & PYQs.</p>
+            </a>
+
+            <a href="prepX_Anaesthesia.html" className="card text-emerald-400">
+              <h2>PrepX Anaesthesia</h2>
+              <p>Airway, drugs & anesthesia basics.</p>
+            </a>
+
+            <a href="prepX_OBSGYNAE.html" className="card text-rose-300">
+              <h2>PrepX OBGYN</h2>
+              <p>Obstetrics & gynecology MCQs.</p>
+            </a>
+
+            <a href="prepX_FMT.html" className="card text-gray-300">
+              <h2>PrepX Forensic Medicine</h2>
+              <p>Legal medicine & toxicology.</p>
+            </a>
+
+            <a href="PYQs-NEET-PG.html" className="card text-yellow-300">
+              <h2>NEET PG PYQs</h2>
+              <p>Previous year NEET PG questions.</p>
+            </a>
+
+          </section>
+
+          {/* INFO */}
+          <section className="bg-black/70 p-6 rounded-xl border border-pink-500/30 text-center mb-16">
+            <p className="text-gray-400">
+              Designed for serious aspirants preparing for
+              <span className="text-pink-400"> NEET PG </span>
+              and
+              <span className="text-cyan-400"> INI-CET</span>.
+            </p>
+          </section>
+
+          {/* FOOTER */}
+          <footer className="text-center text-gray-600 text-xs">
+            © 2026 Rikshit Joshi • Medical Question Bank
+          </footer>
+
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
