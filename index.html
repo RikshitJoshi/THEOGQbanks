@@ -15,16 +15,29 @@
       background: radial-gradient(circle at top, #020617, #000);
       overflow-x: hidden;
     }
+
     .intro { animation: fadeIn 1.2s ease-out both; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     .pulse { animation: pulseGlow 3s infinite; }
     @keyframes pulseGlow {
       0%,100% { box-shadow: 0 0 25px #ec4899; }
       50% { box-shadow: 0 0 55px #ec4899; }
     }
+
+    /* Instagram icon animation */
+    .ig-icon {
+      animation: igPulse 2.5s infinite;
+    }
+    @keyframes igPulse {
+      0%   { transform: scale(1) rotate(0deg); }
+      50%  { transform: scale(1.15) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
     .card {
       background: rgba(0,0,0,0.7);
       padding: 1.5rem;
@@ -37,6 +50,7 @@
       box-shadow: 0 0 25px currentColor;
       transform: translateY(-4px);
     }
+
     .watermark {
       position: fixed;
       bottom: 10px;
@@ -53,11 +67,24 @@
 <body class="text-gray-200">
 <div class="watermark">THE OG PIRATE</div>
 
+<!-- CONTACT ADMIN BUTTON -->
 <a href="https://instagram.com/nameisrikshit" target="_blank"
-   class="fixed top-4 left-4 z-50 px-4 py-2 rounded-xl
+   class="fixed top-4 left-4 z-50 flex items-center gap-2
+          px-4 py-2 rounded-xl
           bg-black/80 border border-pink-500/50
           text-pink-400 text-sm font-semibold
-          hover:bg-pink-500 hover:text-black transition">
+          hover:bg-pink-500 hover:text-black
+          hover:shadow-[0_0_20px_#ec4899]
+          transition-all duration-300">
+
+  <!-- Animated Instagram Icon -->
+  <svg xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 24 24"
+       fill="currentColor"
+       class="w-5 h-5 ig-icon">
+    <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+  </svg>
+
   Contact Admin
 </a>
 
@@ -139,9 +166,7 @@ function App() {
         <h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
           THE OG PIRATE
         </h2>
-        <p className="mt-2 text-gray-400">
-          High-Yield • No Noise • Just Results
-        </p>
+        <p className="mt-2 text-gray-400">High-Yield • No Noise • Just Results</p>
       </section>
 
       {/* SEARCH */}
