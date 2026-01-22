@@ -50,9 +50,6 @@ body {
   box-shadow: 0 0 25px currentColor;
   transform: translateY(-6px);
 }
-.card:active {
-  transform: scale(0.97);
-}
 
 /* SUBJECT ICON */
 .subject-icon {
@@ -123,31 +120,17 @@ const years = [
 ["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
 ["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
 ]},
-{ title:"3rd Year MBBS – Part 1", subjects:[
-["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
-["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
-]},
-{ title:"Final Year MBBS", subjects:[
-["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
-["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
-["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
-["🤰","PrepX OBGYN","prepX_OBSGYNAE.html","text-rose-300"],
-["🦿","PrepX Orthopaedics","prepX_Orthopaedics.html","text-amber-400"],
-["👂","PrepX ENT","prepX_ENT.html","text-indigo-400"],
-["👁️","PrepX Ophthalmology","prepX_OPTHA.html","text-blue-400"],
-["🧴","PrepX Dermatology","prepX_Dermatology.html","text-pink-300"],
-["🧠","PrepX Psychiatry","prepX_Psychiatry.html","text-violet-400"],
-["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
-["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
-]},
 ];
 
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
 
 <section className="text-center mb-16">
-<img src="og_pirate.jpg"
-className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse object-cover"/>
+<img
+  src="./og_pirate.png"
+  alt="OG Pirate"
+  className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse object-cover bg-black"
+/>
 <h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
 THE OG PIRATE
 </h2>
@@ -192,3 +175,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 </body>
 </html>
+
