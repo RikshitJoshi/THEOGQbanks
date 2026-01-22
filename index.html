@@ -5,7 +5,10 @@
 <title>Medical Question Bank | NEET PG & INI-CET</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- React -->
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -51,23 +54,14 @@ body {
   transform: scale(0.97);
 }
 
-/* SUBJECT ICON ANIMATION */
+/* SUBJECT ICON */
 .subject-icon {
   font-size: 2.4rem;
-  display: inline-block;
   animation: floatIcon 3s ease-in-out infinite;
 }
 @keyframes floatIcon {
   0%,100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-6px) scale(1.08); }
-}
-.card:hover .subject-icon {
-  animation: hoverPulse 0.6s ease-in-out;
-}
-@keyframes hoverPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1.1); }
 }
 
 /* WATERMARK */
@@ -79,7 +73,6 @@ body {
   color: rgba(255,255,255,0.08);
   letter-spacing: 0.15em;
   user-select: none;
-  pointer-events: none;
 }
 
 /* INSTAGRAM ICON */
@@ -98,7 +91,7 @@ body {
 
 <div class="watermark">THE OG PIRATE</div>
 
-<!-- CONTACT ADMIN (STATIC – SCROLLS WITH PAGE) -->
+<!-- CONTACT ADMIN -->
 <a href="https://instagram.com/nameisrikshit" target="_blank"
 class="absolute top-4 left-4 z-10 flex items-center gap-2
 px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
@@ -117,7 +110,6 @@ Contact Admin
 
 <script type="text/babel">
 function App() {
-
 const [search, setSearch] = React.useState("");
 
 const years = [
@@ -148,28 +140,14 @@ const years = [
 ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
-{ title:"Exams & Extras", subjects:[
-["❓","Quizz (1st–3rd Year)","Quizz 1st-3rd year.html","text-cyan-400"],
-["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
-["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
-  ["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
-["💎","Marrow Pearls","Marrow Pearls.html","text-pink-300"],
-]}
 ];
 
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
 
-<section className="text-center mb-10">
-<h1 className="text-3xl md:text-4xl font-extrabold text-white">
-Medical Question Bank
-</h1>
-<p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
-</section>
-
 <section className="text-center mb-16">
-<img src="og pirate.jpeg"
-className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
+<img src="og_pirate.jpg"
+className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse object-cover"/>
 <h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
 THE OG PIRATE
 </h2>
