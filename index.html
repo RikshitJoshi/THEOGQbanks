@@ -23,7 +23,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* pulse */
+/* hero pulse */
 .pulse { animation: pulseGlow 3s infinite; }
 @keyframes pulseGlow {
   0%,100% { box-shadow: 0 0 25px #ec4899; }
@@ -43,9 +43,27 @@ body {
   box-shadow: 0 0 25px currentColor;
   transform: translateY(-6px);
 }
-.subject-icon { font-size: 2.4rem; }
 
-/* instagram pulse */
+/* subject emoji animation */
+.subject-icon {
+  font-size: 2.4rem;
+  display: inline-block;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.08); }
+}
+.card:hover .subject-icon {
+  animation: hoverPulse 0.6s ease-in-out;
+}
+@keyframes hoverPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1.1); }
+}
+
+/* instagram */
 .ig-icon { animation: igPulse 2.5s infinite; }
 @keyframes igPulse {
   0% { transform: scale(1) rotate(0deg); }
@@ -53,7 +71,7 @@ body {
   100% { transform: scale(1) rotate(0deg); }
 }
 
-/* iframe overlay */
+/* iframe */
 #iframeOverlay {
   display:none;
   position:fixed;
@@ -88,7 +106,7 @@ body {
 
 <body class="text-gray-200">
 
-<!-- ✅ CONTACT ADMIN -->
+<!-- CONTACT ADMIN -->
 <a href="https://instagram.com/nameisrikshit" target="_blank"
 class="absolute top-4 left-4 z-10 flex items-center gap-2
 px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
@@ -98,7 +116,7 @@ hover:shadow-[0_0_20px_#ec4899]
 transition-all">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 fill="currentColor" class="w-5 h-5 ig-icon">
-<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Z"/>
 </svg>
 Contact Admin
 </a>
@@ -108,7 +126,7 @@ Contact Admin
 <!-- IFRAME -->
 <div id="iframeOverlay">
   <button class="close-btn" onclick="closeIframe()">✖ Close</button>
-  <iframe src="PASTE_YOUR_NETLIFY_LINK_HERE" allowfullscreen></iframe>
+  <iframe src="https://neetpgquizz.netlify.app/" allowfullscreen></iframe>
 </div>
 
 <script type="text/babel">
@@ -146,6 +164,7 @@ const years = [
 ]},
 { title:"Exams & Extras", subjects:[
 ["❓","Quizz (1st–3rd Year)","Quizz 1st-3rd year.html","text-cyan-400"],
+["❓","NEET PG QUIZZs","__IFRAME__","text-cyan-400"],
 ["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
 ["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
 ["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
@@ -153,17 +172,23 @@ const years = [
 ]}
 ];
 
+function handleClick(link){
+  if(link === "__IFRAME__") {
+    openIframe();
+  } else {
+    window.location.href = link;
+  }
+}
+
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
 
-{/* HERO */}
 <section className="text-center mb-16">
   <img src="og pirate.jpeg"
     className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
   <h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
     THE OG PIRATE
   </h2>
-  <p className="text-gray-400 mt-2">Medical Question Bank</p>
 </section>
 
 <div className="max-w-md mx-auto mb-14">
@@ -184,21 +209,12 @@ return (
 
 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 {filtered.map(([icon,title,link,color])=>(
-<React.Fragment key={title}>
-<a href={link} className={`card ${color}`}>
-<div className="subject-icon mb-3">{icon}</div>
-<h2 className="text-lg font-semibold">{title}</h2>
-</a>
-
-{title === "Quizz (1st–3rd Year)" && (
-<button onClick={openIframe}
-className="px-6 py-3 rounded-xl bg-white-400
-text-cyan font-bold hover:shadow-[0_0_25px_#22d3ee]">
-❓ NEET PG QUIZZ
- 🚨 (open in desktop site mode in Mobile)
-</button>
-)}
-</React.Fragment>
+<div key={title}
+onClick={()=>handleClick(link)}
+className={`card ${color} cursor-pointer`}>
+  <div className="subject-icon mb-3">{icon}</div>
+  <h2 className="text-lg font-semibold">{title}</h2>
+</div>
 ))}
 </div>
 </section>
