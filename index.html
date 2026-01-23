@@ -13,7 +13,6 @@
   gtag('js', new Date());
   gtag('config', 'G-GN1HCFMP7Y');
 </script>
-<!-- GA4 END -->
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -21,21 +20,26 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
 <style>
-/* ======= ORIGINAL CSS (UNCHANGED) ======= */
 body {
   background: radial-gradient(circle at top, #020617, #000);
   overflow-x: hidden;
 }
+
+/* intro */
 .intro { animation: fadeIn 1.2s ease-out both; }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* hero pulse */
 .pulse { animation: pulseGlow 3s infinite; }
 @keyframes pulseGlow {
   0%,100% { box-shadow: 0 0 25px #ec4899; }
   50% { box-shadow: 0 0 55px #ec4899; }
 }
+
+/* cards */
 .card {
   background: rgba(0,0,0,0.7);
   padding: 1.5rem;
@@ -48,6 +52,8 @@ body {
   box-shadow: 0 0 25px currentColor;
   transform: translateY(-6px);
 }
+
+/* subject emoji animation */
 .subject-icon {
   font-size: 2.4rem;
   display: inline-block;
@@ -65,12 +71,16 @@ body {
   50% { transform: scale(1.25); }
   100% { transform: scale(1.1); }
 }
+
+/* instagram ORIGINAL animation */
 .ig-icon { animation: igPulse 2.5s infinite; }
 @keyframes igPulse {
   0% { transform: scale(1) rotate(0deg); }
   50% { transform: scale(1.15) rotate(5deg); }
   100% { transform: scale(1) rotate(0deg); }
 }
+
+/* iframe */
 #iframeOverlay {
   display:none;
   position:fixed;
@@ -105,7 +115,7 @@ body {
 
 <body class="text-gray-200">
 
-<!-- CONTACT ADMIN (UNCHANGED) -->
+<!-- CONTACT ADMIN (ORIGINAL INSTAGRAM SVG) -->
 <a href="https://instagram.com/nameisrikshit" target="_blank"
 class="absolute top-4 left-4 z-10 flex items-center gap-2
 px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
@@ -115,7 +125,7 @@ hover:shadow-[0_0_20px_#ec4899]
 transition-all">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
 fill="currentColor" class="w-5 h-5 ig-icon">
-<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Z"/>
+<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
 </svg>
 Contact Admin
 </a>
@@ -133,49 +143,48 @@ function App() {
 
 const [search, setSearch] = React.useState("");
 
-const years = [ /* ===== ORIGINAL DATA UNCHANGED ===== */ 
-  { title:"1st Year MBBS", subjects:[
-    ["🦴","PrepX Anatomy","prepX_Anatomy.html","text-yellow-400"],
-    ["❤️","PrepX Physiology","PrepX_Physiology.html","text-cyan-400"],
-    ["🧪","PrepX Biochemistry","prepX_Biochemistry.html","text-pink-400"],
-  ]},
-  { title:"2nd Year MBBS", subjects:[
-    ["🔬","PrepX Pathology","prepX_Pathology.html","text-rose-400"],
-    ["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
-    ["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
-  ]},
-  { title:"3rd Year MBBS – Part 1", subjects:[
-    ["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
-    ["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
-  ]},
-  { title:"Final Year MBBS", subjects:[
-    ["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
-    ["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
-    ["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
-    ["🤰","PrepX OBGYN","prepX_OBSGYNAE.html","text-rose-300"],
-    ["🦿","PrepX Orthopaedics","prepX_Orthopaedics.html","text-amber-400"],
-    ["👂","PrepX ENT","prepX_ENT.html","text-indigo-400"],
-    ["👁️","PrepX Ophthalmology","prepX_OPTHA.html","text-blue-400"],
-    ["🧴","PrepX Dermatology","prepX_Dermatology.html","text-pink-300"],
-    ["🧠","PrepX Psychiatry","prepX_Psychiatry.html","text-violet-400"],
-    ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
-    ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
-  ]},
-  { title:"Exams & Extras", subjects:[
-    ["❓","Quizz (1st–3rd Year 🚨OPEN IN DESKTOP SITE MODE IN PHONES)","Quizz 1st-3rd year.html","text-cyan-400"],
-    ["❓","NEET PG Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","__IFRAME__","text-cyan-400"],
-    ["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
-    ["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
-    ["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
-    ["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
-  ]}
+const years = [
+{ title:"1st Year MBBS", subjects:[
+["🦴","PrepX Anatomy","prepX_Anatomy.html","text-yellow-400"],
+["❤️","PrepX Physiology","PrepX_Physiology.html","text-cyan-400"],
+["🧪","PrepX Biochemistry","prepX_Biochemistry.html","text-pink-400"],
+]},
+{ title:"2nd Year MBBS", subjects:[
+["🔬","PrepX Pathology","prepX_Pathology.html","text-rose-400"],
+["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
+["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
+]},
+{ title:"3rd Year MBBS – Part 1", subjects:[
+["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
+["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
+]},
+{ title:"Final Year MBBS", subjects:[
+["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
+["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
+["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
+["🤰","PrepX OBGYN","prepX_OBSGYNAE.html","text-rose-300"],
+["🦿","PrepX Orthopaedics","prepX_Orthopaedics.html","text-amber-400"],
+["👂","PrepX ENT","prepX_ENT.html","text-indigo-400"],
+["👁️","PrepX Ophthalmology","prepX_OPTHA.html","text-blue-400"],
+["🧴","PrepX Dermatology","prepX_Dermatology.html","text-pink-300"],
+["🧠","PrepX Psychiatry","prepX_Psychiatry.html","text-violet-400"],
+["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
+["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
+]},
+{ title:"Exams & Extras", subjects:[
+["❓","Quizz (1st–3rd Year 🚨OPEN IN DESKTOP SITE MODE IN PHONES)","Quizz 1st-3rd year.html","text-cyan-400"],
+["❓","NEET PG Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","__IFRAME__","text-cyan-400"],
+["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
+["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
+["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
+["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
+]}
 ];
 
-// 🔵 SUBJECT CLICK TRACKING (GA4)
 function handleClick(link, title){
-  gtag('event', 'subject_click', {
-    event_category: 'subjects',
-    event_label: title
+  gtag('event','subject_click',{
+    event_category:'subjects',
+    event_label:title
   });
 
   if(link === "__IFRAME__") openIframe();
@@ -241,14 +250,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 
 <script>
-// 🔵 IFRAME OPEN TRACKING (GA4)
 function openIframe() {
   document.getElementById("iframeOverlay").style.display = "block";
   document.body.style.overflow = "hidden";
 
-  gtag('event', 'open_quizz_iframe', {
-    event_category: 'engagement',
-    event_label: 'NEET PG Quizz iframe'
+  gtag('event','open_quizz_iframe',{
+    event_category:'engagement',
+    event_label:'NEET PG Quizz iframe'
   });
 }
 function closeIframe() {
