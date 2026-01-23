@@ -43,8 +43,14 @@ body {
   box-shadow: 0 0 25px currentColor;
   transform: translateY(-6px);
 }
-.subject-icon {
-  font-size: 2.4rem;
+.subject-icon { font-size: 2.4rem; }
+
+/* instagram pulse */
+.ig-icon { animation: igPulse 2.5s infinite; }
+@keyframes igPulse {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.15) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 /* iframe overlay */
@@ -82,12 +88,27 @@ body {
 
 <body class="text-gray-200">
 
+<!-- ✅ CONTACT ADMIN -->
+<a href="https://instagram.com/nameisrikshit" target="_blank"
+class="absolute top-4 left-4 z-10 flex items-center gap-2
+px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
+text-pink-400 text-sm font-semibold
+hover:bg-pink-500 hover:text-black
+hover:shadow-[0_0_20px_#ec4899]
+transition-all">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+fill="currentColor" class="w-5 h-5 ig-icon">
+<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+</svg>
+Contact Admin
+</a>
+
 <div id="root"></div>
 
-<!-- 🔥 IFRAME OVERLAY -->
+<!-- IFRAME -->
 <div id="iframeOverlay">
   <button class="close-btn" onclick="closeIframe()">✖ Close</button>
-  <iframe src="https://neetpgquizz.netlify.app/" allowfullscreen></iframe>
+  <iframe src="PASTE_YOUR_NETLIFY_LINK_HERE" allowfullscreen></iframe>
 </div>
 
 <script type="text/babel">
@@ -135,20 +156,21 @@ const years = [
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
 
-<section className="text-center mb-10">
-<h1 className="text-3xl md:text-4xl font-extrabold text-white">
-Medical Question Bank
-</h1>
-<p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
+{/* HERO */}
+<section className="text-center mb-16">
+  <img src="og pirate.jpeg"
+    className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
+  <h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
+    THE OG PIRATE
+  </h2>
+  <p className="text-gray-400 mt-2">Medical Question Bank</p>
 </section>
 
 <div className="max-w-md mx-auto mb-14">
-<input
-  value={search}
-  onChange={e=>setSearch(e.target.value)}
-  placeholder="Search subjects..."
-  className="w-full px-4 py-3 rounded-xl bg-black/70
-  border border-cyan-400/40 focus:ring-2 focus:ring-cyan-400 outline-none"/>
+<input value={search} onChange={e=>setSearch(e.target.value)}
+placeholder="Search subjects..."
+className="w-full px-4 py-3 rounded-xl bg-black/70
+border border-cyan-400/40 focus:ring-2 focus:ring-cyan-400 outline-none"/>
 </div>
 
 {years.map(year=>{
@@ -163,24 +185,18 @@ return (
 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 {filtered.map(([icon,title,link,color])=>(
 <React.Fragment key={title}>
+<a href={link} className={`card ${color}`}>
+<div className="subject-icon mb-3">{icon}</div>
+<h2 className="text-lg font-semibold">{title}</h2>
+</a>
 
-  <a href={link} className={`card ${color}`}>
-    <div className="subject-icon mb-3">{icon}</div>
-    <h2 className="text-lg font-semibold">{title}</h2>
-  </a>
-
-  {title === "Quizz (1st–3rd Year)" && (
-    <button
-      onClick={() => openIframe()}
-      className="px-6 py-3 rounded-xl
-             bg-cyan-400 text-black font-bold
-             hover:bg-cyan-300
-             hover:shadow-[0_0_25px_#22d3ee]
-             transition-all">
-      🌐 Open Online Quizz
-    </button>
-  )}
-
+{title === "Quizz (1st–3rd Year)" && (
+<button onClick={openIframe}
+className="px-6 py-3 rounded-xl bg-cyan-400
+text-black font-bold hover:shadow-[0_0_25px_#22d3ee]">
+🌐 Open Online Quizz
+</button>
+)}
 </React.Fragment>
 ))}
 </div>
@@ -189,7 +205,7 @@ return (
 })}
 
 <footer className="text-center text-gray-600 text-xs mt-20">
-© 2026 Rikshit Joshi • Medical Question Bank
+© 2026 Rikshit Joshi • THE OG PIRATE
 </footer>
 
 </main>
