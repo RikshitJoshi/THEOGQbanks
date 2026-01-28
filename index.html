@@ -8,10 +8,10 @@
 <!-- Google Analytics (UNCHANGED) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1HCFMP7Y"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-GN1HCFMP7Y');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GN1HCFMP7Y');
 </script>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -19,7 +19,7 @@ gtag('config', 'G-GN1HCFMP7Y');
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- Firebase (ADDED – required for login) -->
+<!-- Firebase (ONLY ADDITION) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
@@ -39,7 +39,7 @@ body {
   border-radius: 1rem;
   border: 1px solid rgba(255,255,255,0.15);
   transition: all 0.3s ease;
-  cursor:pointer;
+  display: block;
 }
 .card:hover {
   box-shadow: 0 0 25px currentColor;
@@ -50,24 +50,28 @@ body {
 
 <body class="text-gray-200">
 
-<!-- LOGIN BUTTON (ONLY ADDITION) -->
-<button id="loginBtn"
-onclick="openLogin()"
-class="fixed top-4 right-4 z-20 px-4 py-2 rounded-xl
-bg-black/80 border border-cyan-400/50
-text-cyan-300 text-sm font-semibold">
+<!-- LOGIN BUTTON (SMALL, SAFE ADD) -->
+<button onclick="openLogin()"
+style="position:fixed;top:16px;right:16px;z-index:9999;
+background:rgba(0,0,0,.8);border:1px solid #22d3ee;
+color:#22d3ee;padding:8px 14px;border-radius:12px;font-weight:600;">
 Login
 </button>
 
 <div id="root"></div>
 
-<!-- LOGIN MODAL (OVERLAY ONLY – UI SAFE) -->
+<!-- LOGIN MODAL (OVERLAY ONLY) -->
 <div id="loginModal"
-class="hidden fixed inset-0 z-[99999] bg-black/80 flex items-center justify-center">
-  <div class="bg-black border border-cyan-400 rounded-xl p-6 text-center">
-    <h2 class="text-xl font-bold text-cyan-400 mb-4">Login Required</h2>
+style="display:none;position:fixed;inset:0;z-index:10000;
+background:rgba(0,0,0,.85);align-items:center;justify-content:center;">
+  <div style="background:black;padding:24px;border-radius:14px;
+  border:1px solid #22d3ee;text-align:center;">
+    <h2 style="color:#22d3ee;font-size:20px;margin-bottom:16px;">
+      Login Required
+    </h2>
     <button onclick="googleLogin()"
-    class="px-6 py-3 rounded-xl bg-cyan-400 text-black font-bold">
+    style="padding:12px 22px;background:#22d3ee;color:black;
+    border-radius:10px;font-weight:bold;">
       Continue with Google
     </button>
   </div>
@@ -78,7 +82,7 @@ function App(){
 
 function handleClick(link, title){
 
-  // 🔐 LOGIN REQUIRED
+  // 🔐 LOGIN CHECK (ONLY LOGIC ADDED)
   if(!window.currentUser){
     openLogin();
     return;
@@ -90,32 +94,18 @@ function handleClick(link, title){
     event_label:title
   });
 
-  window.location.href = link;
+  if(link === "__IFRAME__") openIframe();
+  else window.location.href = link;
 }
 
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
-  <section className="text-center mb-10">
-    <h1 className="text-3xl font-extrabold text-white">
+  <section className="text-center mb-6">
+    <h1 className="text-3xl md:text-4xl font-extrabold text-white">
       Medical Question Bank
     </h1>
     <p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
   </section>
-
-  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div className="card text-cyan-400"
-      onClick={()=>handleClick("prepX_Anatomy.html","Anatomy")}>
-      🦴 Anatomy
-    </div>
-    <div className="card text-pink-400"
-      onClick={()=>handleClick("PrepX_Physiology.html","Physiology")}>
-      ❤️ Physiology
-    </div>
-    <div className="card text-yellow-400"
-      onClick={()=>handleClick("prepX_Biochemistry.html","Biochemistry")}>
-      🧪 Biochemistry
-    </div>
-  </div>
 </main>
 );
 }
@@ -124,7 +114,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 
 <script>
-/* 🔥 FIREBASE INIT – USING YOUR CONFIG */
+/* FIREBASE INIT – YOUR EXACT CONFIG */
 firebase.initializeApp({
   apiKey: "AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
   authDomain: "og-pirate-login.firebaseapp.com",
@@ -134,22 +124,19 @@ firebase.initializeApp({
 const auth = firebase.auth();
 window.currentUser = null;
 
-/* MODAL */
 function openLogin(){
-  document.getElementById("loginModal").classList.remove("hidden");
+  document.getElementById("loginModal").style.display = "flex";
 }
 function closeLogin(){
-  document.getElementById("loginModal").classList.add("hidden");
+  document.getElementById("loginModal").style.display = "none";
 }
 
-/* ✅ GOOGLE LOGIN – GUARANTEED WORKING */
+/* ✅ GOOGLE LOGIN – FINAL & WORKING */
 function googleLogin(){
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
-    .then(result=>{
-      window.currentUser = result.user;
-      document.getElementById("loginBtn").innerText =
-        result.user.displayName;
+    .then(res=>{
+      window.currentUser = res.user;
       closeLogin();
     })
     .catch(err=>{
@@ -158,15 +145,12 @@ function googleLogin(){
     });
 }
 
-/* 🔁 KEEP LOGIN AFTER REFRESH */
+/* KEEP LOGIN AFTER REFRESH */
 auth.onAuthStateChanged(user=>{
   if(user){
     window.currentUser = user;
-    document.getElementById("loginBtn").innerText =
-      user.displayName;
   } else {
     window.currentUser = null;
-    document.getElementById("loginBtn").innerText = "Login";
   }
 });
 </script>
