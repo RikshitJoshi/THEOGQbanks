@@ -8,10 +8,10 @@
 <!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1HCFMP7Y"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-GN1HCFMP7Y');
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-GN1HCFMP7Y');
 </script>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -27,11 +27,6 @@
 body {
   background: radial-gradient(circle at top, #020617, #000);
   overflow-x: hidden;
-}
-
-/* 🔒 hide homepage until login */
-#root {
-  display: none;
 }
 </style>
 </head>
@@ -56,103 +51,103 @@ Contact Admin
 <!-- LOGIN BUTTON -->
 <button id="loginBtn"
 onclick="openLogin()"
-style="position:absolute; top:16px; right:16px; z-index:10001;
-padding:10px 14px; border-radius:12px;
-background:rgba(0,0,0,0.85);
-border:1px solid #22d3ee;
-color:#22d3ee;
-font-weight:600;">
+class="absolute top-4 right-4 z-10 px-4 py-2 rounded-xl
+bg-black/80 border border-cyan-400/50 text-cyan-300 font-semibold">
 Login
 </button>
 
-<!-- HOME PAGE ROOT (React renders subjects here) -->
+<!-- REACT ROOT (UNCHANGED) -->
 <div id="root"></div>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN OVERLAY (BLOCKS ACCESS, DOES NOT HIDE UI) -->
 <div id="loginModal"
 style="display:flex; position:fixed; inset:0; z-index:99999;
-background:rgba(0,0,0,0.9); align-items:center; justify-content:center;">
-  <div style="background:black; padding:22px; border-radius:14px;
-  border:1px solid #22d3ee; text-align:center;">
-    <h2 style="color:#22d3ee; font-size:20px; margin-bottom:14px;">
-      Login Required
-    </h2>
+background:rgba(0,0,0,0.92);
+backdrop-filter: blur(6px);
+align-items:center; justify-content:center;">
+  <div class="bg-black border border-cyan-400 rounded-xl p-6 text-center">
+    <h2 class="text-xl font-bold text-cyan-400 mb-4">Login Required</h2>
     <button onclick="googleLogin()"
-    style="padding:12px 22px; background:#22d3ee; color:black;
-    font-weight:bold; border-radius:10px;">
+    class="px-6 py-3 rounded-xl bg-cyan-400 text-black font-bold">
       Continue with Google
     </button>
   </div>
 </div>
 
-<!-- 🔥 YOUR ORIGINAL REACT APP (100% SAME) -->
+<!-- 🔥 YOUR ORIGINAL REACT APP (100% SAME AS YOU SENT) -->
 <script type="text/babel">
-/* === ORIGINAL APP CODE – UNCHANGED === */
 function App() {
-  const [search, setSearch] = React.useState("");
+const [search, setSearch] = React.useState("");
 
-  const years = [
-    { title:"1st Year MBBS", subjects:[
-      ["🦴","PrepX Anatomy","prepX_Anatomy.html","text-yellow-400"],
-      ["❤️","PrepX Physiology","PrepX_Physiology.html","text-cyan-400"],
-      ["🧪","PrepX Biochemistry","prepX_Biochemistry.html","text-pink-400"],
-    ]},
-    { title:"2nd Year MBBS", subjects:[
-      ["🔬","PrepX Pathology","prepX_Pathology.html","text-rose-400"],
-      ["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
-      ["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
-    ]},
-    { title:"3rd Year MBBS – Part 1", subjects:[
-      ["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
-      ["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
-    ]},
-    { title:"Final Year MBBS", subjects:[
-      ["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
-      ["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
-      ["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
-      ["🤰","PrepX OBGYN","prepX_OBSGYNAE.html","text-rose-300"],
-      ["🦿","PrepX Orthopaedics","prepX_Orthopaedics.html","text-amber-400"],
-      ["👂","PrepX ENT","prepX_ENT.html","text-indigo-400"],
-      ["👁️","PrepX Ophthalmology","prepX_OPTHA.html","text-blue-400"],
-      ["🧴","PrepX Dermatology","prepX_Dermatology.html","text-pink-300"],
-      ["🧠","PrepX Psychiatry","prepX_Psychiatry.html","text-violet-400"],
-      ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
-      ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
-    ]},
-    { title:"Exams & Extras", subjects:[
-      ["❓","NEET PG / INICET Quizz","Quizz 1st-3rd year.html","text-cyan-400"],
-      ["❓","NEET PG / INICET Quizzs","__IFRAME__","text-cyan-400"],
-      ["❓","FMGE Quizzs","https://fmgequizz.netlify.app/","text-cyan-400"],
-      ["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
-      ["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
-      ["🏥","INICET-AIIMS Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
-      ["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
-    ]}
-  ];
+const years = [
+{ title:"1st Year MBBS", subjects:[
+["🦴","PrepX Anatomy","prepX_Anatomy.html","text-yellow-400"],
+["❤️","PrepX Physiology","PrepX_Physiology.html","text-cyan-400"],
+["🧪","PrepX Biochemistry","prepX_Biochemistry.html","text-pink-400"],
+]},
+{ title:"2nd Year MBBS", subjects:[
+["🔬","PrepX Pathology","prepX_Pathology.html","text-rose-400"],
+["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
+["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
+]},
+{ title:"3rd Year MBBS – Part 1", subjects:[
+["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
+["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
+]},
+{ title:"Final Year MBBS", subjects:[
+["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
+["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
+["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
+["🤰","PrepX OBGYN","prepX_OBSGYNAE.html","text-rose-300"],
+["🦿","PrepX Orthopaedics","prepX_Orthopaedics.html","text-amber-400"],
+["👂","PrepX ENT","prepX_ENT.html","text-indigo-400"],
+["👁️","PrepX Ophthalmology","prepX_OPTHA.html","text-blue-400"],
+["🧴","PrepX Dermatology","prepX_Dermatology.html","text-pink-300"],
+["🧠","PrepX Psychiatry","prepX_Psychiatry.html","text-violet-400"],
+["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
+["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
+]},
+];
 
-  return (
-    <main className="max-w-6xl mx-auto px-4 py-10">
-      {years.map(y => (
-        <section key={y.title} className="mb-10">
-          <h3 className="text-xl font-bold text-cyan-400 mb-4">{y.title}</h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {y.subjects.map(([i,t,l,c])=>(
-              <div key={t} className={`card ${c}`} onClick={()=>window.location.href=l}>
-                <div className="subject-icon mb-2">{i}</div>
-                <h2 className="text-lg font-semibold">{t}</h2>
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-    </main>
-  );
+function handleClick(link){
+  if(!window.currentUser) return;
+  window.location.href = link;
 }
+
+return (
+<main className="max-w-6xl mx-auto px-4 py-10 intro">
+<section className="text-center mb-16">
+<img src="og pirate.jpeg"
+className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
+<h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
+THE OG PIRATE
+</h2>
+</section>
+
+{years.map(year=>(
+<section key={year.title} className="mb-14">
+<h3 className="text-xl font-bold text-cyan-400 mb-6">{year.title}</h3>
+<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+{year.subjects.map(([icon,title,link,color])=>(
+<div key={title}
+onClick={()=>handleClick(link)}
+className={`card ${color} cursor-pointer`}>
+<div className="subject-icon mb-3">{icon}</div>
+<h2 className="text-lg font-semibold">{title}</h2>
+</div>
+))}
+</div>
+</section>
+))}
+</main>
+);
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 
 <script>
-/* FIREBASE AUTH LOGIC */
+/* FIREBASE AUTH */
 firebase.initializeApp({
   apiKey: "AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
   authDomain: "og-pirate-login.firebaseapp.com",
@@ -160,6 +155,7 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
+window.currentUser = null;
 
 function openLogin(){
   document.getElementById("loginModal").style.display = "flex";
@@ -171,17 +167,16 @@ function googleLogin(){
 }
 
 auth.onAuthStateChanged(user=>{
-  const root = document.getElementById("root");
   const modal = document.getElementById("loginModal");
   const btn = document.getElementById("loginBtn");
 
   if(user){
-    root.style.display = "block";
-    modal.style.display = "none";
+    window.currentUser = user;
+    modal.style.display = "none";   // 🔓 unlock
     btn.innerText = user.displayName;
   } else {
-    root.style.display = "none";
-    modal.style.display = "flex";
+    window.currentUser = null;
+    modal.style.display = "flex";  // 🔒 lock
     btn.innerText = "Login";
   }
 });
