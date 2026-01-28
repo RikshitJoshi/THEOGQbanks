@@ -24,22 +24,16 @@ body {
   background: radial-gradient(circle at top, #020617, #000);
   overflow-x: hidden;
 }
-
-/* intro */
 .intro { animation: fadeIn 1.2s ease-out both; }
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-/* hero pulse */
 .pulse { animation: pulseGlow 3s infinite; }
 @keyframes pulseGlow {
   0%,100% { box-shadow: 0 0 25px #ec4899; }
   50% { box-shadow: 0 0 55px #ec4899; }
 }
-
-/* cards */
 .card {
   background: rgba(0,0,0,0.7);
   padding: 1.5rem;
@@ -52,8 +46,6 @@ body {
   box-shadow: 0 0 25px currentColor;
   transform: translateY(-6px);
 }
-
-/* subject emoji animation */
 .subject-icon {
   font-size: 2.4rem;
   display: inline-block;
@@ -71,16 +63,12 @@ body {
   50% { transform: scale(1.25); }
   100% { transform: scale(1.1); }
 }
-
-/* instagram ORIGINAL animation */
 .ig-icon { animation: igPulse 2.5s infinite; }
 @keyframes igPulse {
   0% { transform: scale(1) rotate(0deg); }
   50% { transform: scale(1.15) rotate(5deg); }
   100% { transform: scale(1) rotate(0deg); }
 }
-
-/* iframe */
 #iframeOverlay {
   display:none;
   position:fixed;
@@ -115,7 +103,6 @@ body {
 
 <body class="text-gray-200">
 
-<!-- CONTACT ADMIN (ORIGINAL INSTAGRAM SVG) -->
 <a href="https://instagram.com/nameisrikshit" target="_blank"
 class="absolute top-4 left-4 z-10 flex items-center gap-2
 px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
@@ -132,7 +119,6 @@ Contact Admin
 
 <div id="root"></div>
 
-<!-- IFRAME -->
 <div id="iframeOverlay">
   <button class="close-btn" onclick="closeIframe()">✖ Close</button>
   <iframe src="https://neetpgquizz.netlify.app/" allowfullscreen></iframe>
@@ -140,7 +126,6 @@ Contact Admin
 
 <script type="text/babel">
 function App() {
-
 const [search, setSearch] = React.useState("");
 
 const years = [
@@ -174,6 +159,7 @@ const years = [
 { title:"Exams & Extras", subjects:[
 ["❓","Quizz (1st–3rd Year 🚨OPEN IN DESKTOP SITE MODE IN PHONES)","Quizz 1st-3rd year.html","text-cyan-400"],
 ["❓","NEET PG Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","__IFRAME__","text-cyan-400"],
+["❓","FMGE Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","https://fmgequizz.netlify.app/","text-cyan-400"],
 ["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
 ["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
 ["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
@@ -182,18 +168,13 @@ const years = [
 ];
 
 function handleClick(link, title){
-  gtag('event','subject_click',{
-    event_category:'subjects',
-    event_label:title
-  });
-
+  gtag('event','subject_click',{ event_category:'subjects', event_label:title });
   if(link === "__IFRAME__") openIframe();
   else window.location.href = link;
 }
 
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
-
 <section className="text-center mb-6">
 <h1 className="text-3xl md:text-4xl font-extrabold text-white">
 Medical Question Bank
@@ -241,7 +222,6 @@ className={`card ${color} cursor-pointer`}>
 <footer className="text-center text-gray-600 text-xs mt-20">
 © 2026 Rikshit Joshi • THE OG PIRATE
 </footer>
-
 </main>
 );
 }
@@ -253,17 +233,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 function openIframe() {
   document.getElementById("iframeOverlay").style.display = "block";
   document.body.style.overflow = "hidden";
-
-  gtag('event','open_quizz_iframe',{
-    event_category:'engagement',
-    event_label:'NEET PG Quizz iframe'
-  });
+  gtag('event','open_quizz_iframe',{ event_category:'engagement', event_label:'NEET PG Quizz iframe' });
 }
 function closeIframe() {
   document.getElementById("iframeOverlay").style.display = "none";
   document.body.style.overflow = "auto";
 }
 </script>
-
-</body>
-</html>
