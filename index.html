@@ -45,15 +45,14 @@ font-size:2.2rem;background:rgba(0,0,0,.45);
 border-radius:1rem
 }
 
-/* Instagram REAL animation (parent animated) */
+/* Instagram animation */
 .ig-btn{
 animation:igPulse 2.2s ease-in-out infinite;
-transform-origin:center;
 }
 @keyframes igPulse{
-0%{transform:scale(1) rotate(0deg);box-shadow:0 0 0 rgba(236,72,153,0)}
-50%{transform:scale(1.12) rotate(3deg);box-shadow:0 0 22px rgba(236,72,153,.6)}
-100%{transform:scale(1) rotate(0deg);box-shadow:0 0 0 rgba(236,72,153,0)}
+0%{transform:scale(1) rotate(0deg)}
+50%{transform:scale(1.12) rotate(3deg)}
+100%{transform:scale(1) rotate(0deg)}
 }
 
 #loginOverlay{
@@ -124,13 +123,6 @@ const years=[
 ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
-{title:"Exams & Extras",free:false,subjects:[
-["❓","NEET PG / INICET Quizz","https://neetpgquizz.netlify.app/","text-cyan-400"],
-["❓","FMGE Quizzs","https://fmgequizz.netlify.app/","text-cyan-400"],
-["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
-["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
-["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
-]}
 ];
 
 function handleClick(link,free){
@@ -140,8 +132,7 @@ const go=confirm("Premium 🔒\n\nMonthly ₹50\nYearly ₹199\n\nOK = Buy Month
 if(go) startPayment("monthly");
 return;
 }
-if(link.startsWith("http")) window.open(link,"_blank");
-else window.location.href=link;
+window.location.href=link;
 }
 
 return(
@@ -187,13 +178,24 @@ apiKey:"AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
 authDomain:"og-pirate-login.firebaseapp.com",
 projectId:"og-pirate-login"
 });
-const auth=firebase.auth(),db=firebase.firestore();
+
+const auth=firebase.auth();
+const db=firebase.firestore();
 window.isPremium=false;
 
-auth.onAuthStateChanged(async u=>{
-if(!u) return;
-const d=await db.collection("users").doc(u.uid).get();
-if(d.exists && Date.now()<d.data().expiry) window.isPremium=true;
+auth.onAuthStateChanged(async user=>{
+const overlay=document.getElementById("loginOverlay");
+if(!user){
+overlay.style.display="flex";
+return;
+}
+overlay.style.display="none"; // 🔥 FIX
+window.currentUser=user;
+
+const doc=await db.collection("users").doc(user.uid).get();
+if(doc.exists && Date.now()<doc.data().expiry){
+window.isPremium=true;
+}
 });
 
 function googleLogin(){
