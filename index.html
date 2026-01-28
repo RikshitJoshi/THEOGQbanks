@@ -19,7 +19,7 @@
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- Firebase (ADDED ONLY) -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
@@ -29,7 +29,20 @@ body {
   overflow-x: hidden;
 }
 
-/* 🔒 login overlay */
+.card {
+  background: rgba(0,0,0,0.7);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.3s ease;
+  display: block;
+  pointer-events: auto;
+}
+.card:hover {
+  box-shadow: 0 0 25px currentColor;
+  transform: translateY(-6px);
+}
+
 #loginOverlay{
   position:fixed;
   inset:0;
@@ -49,25 +62,13 @@ body {
 <a href="https://instagram.com/nameisrikshit" target="_blank"
 class="absolute top-4 left-4 z-10 flex items-center gap-2
 px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
-text-pink-400 text-sm font-semibold
-hover:bg-pink-500 hover:text-black
-hover:shadow-[0_0_20px_#ec4899]
-transition-all">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-fill="currentColor" class="w-5 h-5 ig-icon">
-<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
-</svg>
+text-pink-400 text-sm font-semibold">
 Contact Admin
 </a>
 
 <div id="root"></div>
 
-<div id="iframeOverlay">
-  <button class="close-btn" onclick="closeIframe()">✖ Close</button>
-  <iframe src="https://neetpgquizz.netlify.app/" allowfullscreen></iframe>
-</div>
-
-<!-- 🔐 LOGIN OVERLAY -->
+<!-- LOGIN OVERLAY -->
 <div id="loginOverlay">
   <div style="background:black; padding:28px; border-radius:16px;
   border:1px solid #22d3ee; text-align:center;">
@@ -75,16 +76,14 @@ Contact Admin
       Login Required
     </h2>
     <button onclick="googleLogin()"
-    style="padding:12px 26px; background:#22d3ee; color:black;
-    font-weight:bold; border-radius:12px;">
+    style="padding:12px 26px; background:#22d3ee;
+    color:black; font-weight:bold; border-radius:12px;">
       Continue with Google
     </button>
   </div>
 </div>
 
-<!-- 🔥 YOUR ORIGINAL REACT APP (100% UNCHANGED) -->
 <script type="text/babel">
-/* EXACT SAME CODE YOU GAVE – NO CHANGE */
 function App() {
 const [search, setSearch] = React.useState("");
 
@@ -117,33 +116,22 @@ const years = [
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
 { title:"Exams & Extras", subjects:[
-["❓","NEET PG / INICET Quizz (1st–3rd Year 🚨OPEN IN DESKTOP SITE MODE IN PHONES)","Quizz 1st-3rd year.html","text-cyan-400"],
-["❓","NEET PG / INICET Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","__IFRAME__","text-cyan-400"],
-["❓","FMGE Quizzs / INICET (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","https://fmgequizz.netlify.app/","text-cyan-400"],
+["❓","NEET PG / INICET Quizz","https://neetpgquizz.netlify.app/","text-cyan-400"],
+["❓","FMGE Quizzs","https://fmgequizz.netlify.app/","text-cyan-400"],
 ["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
 ["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
-["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
 ["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
 ]}
 ];
 
-function handleClick(link, title){
-  if(!window.currentUser) return; // 🔒 block access
-  gtag('event','subject_click',{ event_category:'subjects', event_label:title });
-  if(link === "__IFRAME__") openIframe();
+function handleClick(link){
+  if(!window.currentUser) return;
+  if(link.startsWith("http")) window.open(link,"_blank");
   else window.location.href = link;
 }
 
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
-{/* SAME JSX AS BEFORE */}
-<section className="text-center mb-6">
-<h1 className="text-3xl md:text-4xl font-extrabold text-white">
-Medical Question Bank
-</h1>
-<p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
-</section>
-
 <section className="text-center mb-16">
 <img src="og pirate.jpeg"
 className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
@@ -152,58 +140,26 @@ THE OG PIRATE
 </h2>
 </section>
 
-<div className="max-w-md mx-auto mb-14">
-<input value={search} onChange={e=>setSearch(e.target.value)}
-placeholder="Search subjects..."
-className="w-full px-4 py-3 rounded-xl bg-black/70
-border border-cyan-400/40 focus:ring-2 focus:ring-cyan-400 outline-none"/>
-</div>
-
-{years.map(year=>{
-const filtered = year.subjects.filter(s =>
-s[1].toLowerCase().includes(search.toLowerCase()));
-if(!filtered.length) return null;
-
-return (
-<section key={year.title} className="mb-14">
-<h3 className="text-xl font-bold text-cyan-400 mb-6">{year.title}</h3>
+{years.map(y=>(
+<section key={y.title} className="mb-14">
+<h3 className="text-xl font-bold text-cyan-400 mb-6">{y.title}</h3>
 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-{filtered.map(([icon,title,link,color])=>(
-<div key={title}
-onClick={()=>handleClick(link, title)}
-className={`card ${color} cursor-pointer`}>
-<div className="subject-icon mb-3">{icon}</div>
-<h2 className="text-lg font-semibold">{title}</h2>
+{y.subjects.map(([i,t,l,c])=>(
+<div key={t} onClick={()=>handleClick(l)} className={`card ${c} cursor-pointer`}>
+<div className="text-3xl mb-2">{i}</div>
+<h2 className="text-lg font-semibold">{t}</h2>
 </div>
 ))}
 </div>
 </section>
-);
-})}
-
-<footer className="text-center text-gray-600 text-xs mt-20">
-© 2026 Rikshit Joshi • THE OG PIRATE
-</footer>
+))}
 </main>
 );
 }
-
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 
 <script>
-function openIframe() {
-  document.getElementById("iframeOverlay").style.display = "block";
-  document.body.style.overflow = "hidden";
-}
-function closeIframe() {
-  document.getElementById("iframeOverlay").style.display = "none";
-  document.body.style.overflow = "auto";
-}
-</script>
-
-<script>
-/* 🔐 FIREBASE AUTH */
 firebase.initializeApp({
   apiKey: "AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
   authDomain: "og-pirate-login.firebaseapp.com",
@@ -215,17 +171,16 @@ window.currentUser = null;
 
 function googleLogin(){
   const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider).catch(e=>alert(e.message));
+  auth.signInWithPopup(provider);
 }
 
 auth.onAuthStateChanged(user=>{
   const overlay = document.getElementById("loginOverlay");
   if(user){
     window.currentUser = user;
-    overlay.style.display = "none";
+    overlay.style.display="none";
   } else {
-    window.currentUser = null;
-    overlay.style.display = "flex";
+    overlay.style.display="flex";
   }
 });
 </script>
