@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>OG Pirate – Revenue Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+  background:#020617;
+  color:#e5e7eb;
+  font-family:system-ui;
+  padding:30px;
+}
+h1{
+  color:#22d3ee;
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  margin-bottom:30px;
+}
+.card{
+  background:#000;
+  border:1px solid #22d3ee55;
+  border-radius:14px;
+  padding:18px;
+}
+.value{
+  font-size:28px;
+  font-weight:bold;
+}
+.small{
+  color:#94a3b8;
+  font-size:14px;
+}
+canvas{
+  background:#000;
+  border-radius:14px;
+  padding:14px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>💰 OG Pirate – Revenue Dashboard</h1>
+
+<div class="grid">
+  <div class="card">
+    <div class="small">Total Revenue</div>
+    <div class="value" id="totalRevenue">₹0</div>
+  </div>
+  <div class="card">
+    <div class="small">Monthly Users</div>
+    <div class="value" id="monthlyCount">0</div>
+  </div>
+  <div class="card">
+    <div class="small">Yearly Users</div>
+    <div class="value" id="yearlyCount">0</div>
+  </div>
+  <div class="card">
+    <div class="small">Active Users</div>
+    <div class="value" id="activeUsers">0</div>
+  </div>
+  <div class="card">
+    <div class="small">Expired Users</div>
+    <div class="value" id="expiredUsers">0</div>
+  </div>
+</div>
+
+<!-- Charts -->
+<div class="grid">
+  <canvas id="revenueChart"></canvas>
+  <canvas id="statusChart"></canvas>
+  <canvas id="planChart"></canvas>
+</div>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
+  authDomain: "og-pirate-login.firebaseapp.com",
+  projectId: "og-pirate-login"
+});
+
+const db = firebase.firestore();
+
+let monthly = 0;
+let yearly = 0;
+let active = 0;
+let expired = 0;
+let revenue = 0;
+
+db.collection("users").get().then(snapshot=>{
+  snapshot.forEach(doc=>{
+    const u = doc.data();
+
+    if(u.plan === "monthly"){
+      monthly++;
+      revenue += 50;
+    }
+    if(u.plan === "yearly"){
+      yearly++;
+      revenue += 199;
+    }
+
+    if(Date.now() < u.expiry){
+      active++;
+    } else {
+      expired++;
+    }
+  });
+
+  document.getElementById("monthlyCount").innerText = monthly;
+  document.getElementById("yearlyCount").innerText = yearly;
+  document.getElementById("activeUsers").innerText = active;
+  document.getElementById("expiredUsers").innerText = expired;
+  document.getElementById("totalRevenue").innerText = "₹" + revenue;
+
+  // 🔵 Revenue Chart
+  new Chart(document.getElementById("revenueChart"), {
+    type: 'bar',
+    data: {
+      labels: ['Monthly', 'Yearly'],
+      datasets: [{
+        label: 'Revenue (₹)',
+        data: [monthly*50, yearly*199],
+        borderWidth: 1
+      }]
+    }
+  });
+
+  // 🟢 Status Chart
+  new Chart(document.getElementById("statusChart"), {
+    type: 'doughnut',
+    data: {
+      labels: ['Active', 'Expired'],
+      datasets: [{
+        data: [active, expired]
+      }]
+    }
+  });
+
+  // 🟣 Plan Distribution
+  new Chart(document.getElementById("planChart"), {
+    type: 'pie',
+    data: {
+      labels: ['Monthly', 'Yearly'],
+      datasets: [{
+        data: [monthly, yearly]
+      }]
+    }
+  });
+});
+</script>
+
+</body>
+</html>
