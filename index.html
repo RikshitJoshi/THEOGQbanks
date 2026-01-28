@@ -46,9 +46,7 @@ border-radius:1rem
 }
 
 /* Instagram animation */
-.ig-btn{
-animation:igPulse 2.2s ease-in-out infinite;
-}
+.ig-btn{animation:igPulse 2.2s ease-in-out infinite}
 @keyframes igPulse{
 0%{transform:scale(1) rotate(0deg)}
 50%{transform:scale(1.12) rotate(3deg)}
@@ -123,6 +121,13 @@ const years=[
 ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
+{title:"Exams & Extras",free:false,subjects:[
+["❓","NEET PG / INICET Quizz","https://neetpgquizz.netlify.app/","text-cyan-400"],
+["❓","FMGE Quizzs","https://fmgequizz.netlify.app/","text-cyan-400"],
+["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
+["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
+["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
+]}
 ];
 
 function handleClick(link,free){
@@ -132,7 +137,8 @@ const go=confirm("Premium 🔒\n\nMonthly ₹50\nYearly ₹199\n\nOK = Buy Month
 if(go) startPayment("monthly");
 return;
 }
-window.location.href=link;
+if(link.startsWith("http")) window.open(link,"_blank");
+else window.location.href=link;
 }
 
 return(
@@ -178,9 +184,7 @@ apiKey:"AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
 authDomain:"og-pirate-login.firebaseapp.com",
 projectId:"og-pirate-login"
 });
-
-const auth=firebase.auth();
-const db=firebase.firestore();
+const auth=firebase.auth(),db=firebase.firestore();
 window.isPremium=false;
 
 auth.onAuthStateChanged(async user=>{
@@ -189,7 +193,7 @@ if(!user){
 overlay.style.display="flex";
 return;
 }
-overlay.style.display="none"; // 🔥 FIX
+overlay.style.display="none";
 window.currentUser=user;
 
 const doc=await db.collection("users").doc(user.uid).get();
