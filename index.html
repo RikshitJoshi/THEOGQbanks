@@ -45,17 +45,16 @@ font-size:2.2rem;background:rgba(0,0,0,.45);
 border-radius:1rem
 }
 
-/* Instagram animation — FINAL FIX */
+/* ✅ Instagram – FINAL SOFT ANIMATION (NO SOLID BLOCK) */
 .ig-btn{
-  animation: igPulse 2.4s ease-in-out infinite;
-  opacity: 1 !important;
-  filter: none !important;
-  transform-origin:center;
+  animation: igFloat 3s ease-in-out infinite;
+  opacity:1;
+  filter:none;
 }
-@keyframes igPulse{
-  0%{transform:scale(1);box-shadow:0 0 0 rgba(236,72,153,0)}
-  50%{transform:scale(1.1);box-shadow:0 0 22px rgba(236,72,153,.7)}
-  100%{transform:scale(1);box-shadow:0 0 0 rgba(236,72,153,0)}
+@keyframes igFloat{
+  0%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-3px) scale(1.05)}
+  100%{transform:translateY(0) scale(1)}
 }
 
 #loginOverlay{
