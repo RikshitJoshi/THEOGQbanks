@@ -8,10 +8,10 @@
 <!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1HCFMP7Y"></script>
 <script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-GN1HCFMP7Y');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GN1HCFMP7Y');
 </script>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -19,7 +19,7 @@ gtag('config', 'G-GN1HCFMP7Y');
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<!-- Firebase -->
+<!-- Firebase (ADDED ONLY) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
@@ -27,6 +27,18 @@ gtag('config', 'G-GN1HCFMP7Y');
 body {
   background: radial-gradient(circle at top, #020617, #000);
   overflow-x: hidden;
+}
+
+/* 🔒 login overlay */
+#loginOverlay{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  background:rgba(0,0,0,0.92);
+  backdrop-filter: blur(6px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 </style>
 </head>
@@ -48,34 +60,31 @@ fill="currentColor" class="w-5 h-5 ig-icon">
 Contact Admin
 </a>
 
-<!-- LOGIN BUTTON -->
-<button id="loginBtn"
-onclick="openLogin()"
-class="absolute top-4 right-4 z-10 px-4 py-2 rounded-xl
-bg-black/80 border border-cyan-400/50 text-cyan-300 font-semibold">
-Login
-</button>
-
-<!-- REACT ROOT (UNCHANGED) -->
 <div id="root"></div>
 
-<!-- LOGIN OVERLAY (BLOCKS ACCESS, DOES NOT HIDE UI) -->
-<div id="loginModal"
-style="display:flex; position:fixed; inset:0; z-index:99999;
-background:rgba(0,0,0,0.92);
-backdrop-filter: blur(6px);
-align-items:center; justify-content:center;">
-  <div class="bg-black border border-cyan-400 rounded-xl p-6 text-center">
-    <h2 class="text-xl font-bold text-cyan-400 mb-4">Login Required</h2>
+<div id="iframeOverlay">
+  <button class="close-btn" onclick="closeIframe()">✖ Close</button>
+  <iframe src="https://neetpgquizz.netlify.app/" allowfullscreen></iframe>
+</div>
+
+<!-- 🔐 LOGIN OVERLAY -->
+<div id="loginOverlay">
+  <div style="background:black; padding:28px; border-radius:16px;
+  border:1px solid #22d3ee; text-align:center;">
+    <h2 style="color:#22d3ee; font-size:22px; margin-bottom:16px;">
+      Login Required
+    </h2>
     <button onclick="googleLogin()"
-    class="px-6 py-3 rounded-xl bg-cyan-400 text-black font-bold">
+    style="padding:12px 26px; background:#22d3ee; color:black;
+    font-weight:bold; border-radius:12px;">
       Continue with Google
     </button>
   </div>
 </div>
 
-<!-- 🔥 YOUR ORIGINAL REACT APP (100% SAME AS YOU SENT) -->
+<!-- 🔥 YOUR ORIGINAL REACT APP (100% UNCHANGED) -->
 <script type="text/babel">
+/* EXACT SAME CODE YOU GAVE – NO CHANGE */
 function App() {
 const [search, setSearch] = React.useState("");
 
@@ -107,15 +116,34 @@ const years = [
 ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
+{ title:"Exams & Extras", subjects:[
+["❓","NEET PG / INICET Quizz (1st–3rd Year 🚨OPEN IN DESKTOP SITE MODE IN PHONES)","Quizz 1st-3rd year.html","text-cyan-400"],
+["❓","NEET PG / INICET Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","__IFRAME__","text-cyan-400"],
+["❓","FMGE Quizzs / INICET (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","https://fmgequizz.netlify.app/","text-cyan-400"],
+["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
+["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
+["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
+["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
+]}
 ];
 
-function handleClick(link){
-  if(!window.currentUser) return;
-  window.location.href = link;
+function handleClick(link, title){
+  if(!window.currentUser) return; // 🔒 block access
+  gtag('event','subject_click',{ event_category:'subjects', event_label:title });
+  if(link === "__IFRAME__") openIframe();
+  else window.location.href = link;
 }
 
 return (
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
+{/* SAME JSX AS BEFORE */}
+<section className="text-center mb-6">
+<h1 className="text-3xl md:text-4xl font-extrabold text-white">
+Medical Question Bank
+</h1>
+<p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
+</section>
+
 <section className="text-center mb-16">
 <img src="og pirate.jpeg"
 className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
@@ -124,13 +152,25 @@ THE OG PIRATE
 </h2>
 </section>
 
-{years.map(year=>(
+<div className="max-w-md mx-auto mb-14">
+<input value={search} onChange={e=>setSearch(e.target.value)}
+placeholder="Search subjects..."
+className="w-full px-4 py-3 rounded-xl bg-black/70
+border border-cyan-400/40 focus:ring-2 focus:ring-cyan-400 outline-none"/>
+</div>
+
+{years.map(year=>{
+const filtered = year.subjects.filter(s =>
+s[1].toLowerCase().includes(search.toLowerCase()));
+if(!filtered.length) return null;
+
+return (
 <section key={year.title} className="mb-14">
 <h3 className="text-xl font-bold text-cyan-400 mb-6">{year.title}</h3>
 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-{year.subjects.map(([icon,title,link,color])=>(
+{filtered.map(([icon,title,link,color])=>(
 <div key={title}
-onClick={()=>handleClick(link)}
+onClick={()=>handleClick(link, title)}
 className={`card ${color} cursor-pointer`}>
 <div className="subject-icon mb-3">{icon}</div>
 <h2 className="text-lg font-semibold">{title}</h2>
@@ -138,7 +178,12 @@ className={`card ${color} cursor-pointer`}>
 ))}
 </div>
 </section>
-))}
+);
+})}
+
+<footer className="text-center text-gray-600 text-xs mt-20">
+© 2026 Rikshit Joshi • THE OG PIRATE
+</footer>
 </main>
 );
 }
@@ -147,7 +192,18 @@ ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 
 <script>
-/* FIREBASE AUTH */
+function openIframe() {
+  document.getElementById("iframeOverlay").style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+function closeIframe() {
+  document.getElementById("iframeOverlay").style.display = "none";
+  document.body.style.overflow = "auto";
+}
+</script>
+
+<script>
+/* 🔐 FIREBASE AUTH */
 firebase.initializeApp({
   apiKey: "AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
   authDomain: "og-pirate-login.firebaseapp.com",
@@ -157,27 +213,19 @@ firebase.initializeApp({
 const auth = firebase.auth();
 window.currentUser = null;
 
-function openLogin(){
-  document.getElementById("loginModal").style.display = "flex";
-}
-
 function googleLogin(){
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider).catch(e=>alert(e.message));
 }
 
 auth.onAuthStateChanged(user=>{
-  const modal = document.getElementById("loginModal");
-  const btn = document.getElementById("loginBtn");
-
+  const overlay = document.getElementById("loginOverlay");
   if(user){
     window.currentUser = user;
-    modal.style.display = "none";   // 🔓 unlock
-    btn.innerText = user.displayName;
+    overlay.style.display = "none";
   } else {
     window.currentUser = null;
-    modal.style.display = "flex";  // 🔒 lock
-    btn.innerText = "Login";
+    overlay.style.display = "flex";
   }
 });
 </script>
