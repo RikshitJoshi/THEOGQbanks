@@ -33,12 +33,28 @@ body{background:radial-gradient(circle at top,#020617,#000);overflow-x:hidden}
 @keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1}}
 .pulse{animation:pulseGlow 3s infinite}
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 25px #ec4899}50%{box-shadow:0 0 55px #ec4899}}
-.card{background:rgba(0,0,0,.7);padding:1.5rem;border-radius:1rem;border:1px solid rgba(255,255,255,.15);transition:.3s}
+.card{background:rgba(0,0,0,.7);padding:1.5rem;border-radius:1rem;border:1px solid rgba(255,255,255,.15);transition:.3s;position:relative}
 .card:hover{box-shadow:0 0 25px currentColor;transform:translateY(-6px)}
-.subject-icon{font-size:2.4rem;animation:floatIcon 3s ease-in-out infinite}
-@keyframes floatIcon{0%,100%{transform:none}50%{transform:translateY(-6px) scale(1.08)}}
-.ig-icon{animation:igPulse 2.5s infinite}
-@keyframes igPulse{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.subject-icon{font-size:2.4rem}
+
+.locked{filter:blur(2.5px)}
+.lock-icon{
+position:absolute;inset:0;
+display:flex;align-items:center;justify-content:center;
+font-size:2.2rem;background:rgba(0,0,0,.45);
+border-radius:1rem
+}
+
+/* Instagram REAL animation (parent animated) */
+.ig-btn{
+animation:igPulse 2.2s ease-in-out infinite;
+transform-origin:center;
+}
+@keyframes igPulse{
+0%{transform:scale(1) rotate(0deg);box-shadow:0 0 0 rgba(236,72,153,0)}
+50%{transform:scale(1.12) rotate(3deg);box-shadow:0 0 22px rgba(236,72,153,.6)}
+100%{transform:scale(1) rotate(0deg);box-shadow:0 0 0 rgba(236,72,153,0)}
+}
 
 #loginOverlay{
 position:fixed;inset:0;z-index:99999;
@@ -53,13 +69,13 @@ display:flex;align-items:center;justify-content:center
 
 <!-- Instagram -->
 <a href="https://instagram.com/nameisrikshit" target="_blank"
-class="absolute top-4 left-4 z-10 flex items-center gap-2
+class="ig-btn absolute top-4 left-4 z-10 flex items-center gap-2
 px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
 text-pink-400 text-sm font-semibold
 hover:bg-pink-500 hover:text-black
 hover:shadow-[0_0_20px_#ec4899] transition-all">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-fill="currentColor" class="w-5 h-5 ig-icon">
+fill="currentColor" class="w-5 h-5">
 <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Z"/>
 </svg>
 Contact Admin
@@ -79,22 +95,23 @@ Continue with Google
 
 <script type="text/babel">
 function App(){
+
 const years=[
-{title:"1st Year MBBS",subjects:[
+{title:"1st Year MBBS",free:true,subjects:[
 ["🦴","PrepX Anatomy","prepX_Anatomy.html","text-yellow-400"],
 ["❤️","PrepX Physiology","PrepX_Physiology.html","text-cyan-400"],
 ["🧪","PrepX Biochemistry","prepX_Biochemistry.html","text-pink-400"],
 ]},
-{title:"2nd Year MBBS",subjects:[
+{title:"2nd Year MBBS",free:false,subjects:[
 ["🔬","PrepX Pathology","prepX_Pathology.html","text-rose-400"],
 ["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
 ["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
 ]},
-{title:"3rd Year MBBS – Part 1",subjects:[
+{title:"3rd Year MBBS – Part 1",free:false,subjects:[
 ["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
 ["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
 ]},
-{title:"Final Year MBBS",subjects:[
+{title:"Final Year MBBS",free:false,subjects:[
 ["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
 ["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
 ["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
@@ -107,7 +124,7 @@ const years=[
 ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
-{title:"Exams & Extras",subjects:[
+{title:"Exams & Extras",free:false,subjects:[
 ["❓","NEET PG / INICET Quizz","https://neetpgquizz.netlify.app/","text-cyan-400"],
 ["❓","FMGE Quizzs","https://fmgequizz.netlify.app/","text-cyan-400"],
 ["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
@@ -116,19 +133,20 @@ const years=[
 ]}
 ];
 
-function handleClick(link){
-if(!window.currentUser)return;
+function handleClick(link,free){
+if(free){window.location.href=link;return;}
 if(!window.isPremium){
-const go=confirm("Premium 🔒\n\nMonthly ₹50\nYearly ₹199\n\nOK = Monthly | Cancel = Yearly");
-startPayment(go?"monthly":"yearly");
+const go=confirm("Premium 🔒\n\nMonthly ₹50\nYearly ₹199\n\nOK = Buy Monthly\nCancel = Close");
+if(go) startPayment("monthly");
 return;
 }
-if(link.startsWith("http"))window.open(link,"_blank");
+if(link.startsWith("http")) window.open(link,"_blank");
 else window.location.href=link;
 }
 
 return(
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
+
 <section className="text-center mb-6">
 <h1 className="text-3xl md:text-4xl font-extrabold text-white">Medical Question Bank</h1>
 <p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
@@ -144,17 +162,22 @@ return(
 <h3 className="text-xl font-bold text-cyan-400 mb-6">{y.title}</h3>
 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 {y.subjects.map(([i,t,l,c])=>(
-<div key={t} onClick={()=>handleClick(l)} className={`card ${c} cursor-pointer`}>
+<div key={t}
+onClick={()=>handleClick(l,y.free)}
+className={`card ${c} cursor-pointer ${y.free?"":"locked"}`}>
 <div className="subject-icon mb-3">{i}</div>
 <h2 className="text-lg font-semibold">{t}</h2>
+{!y.free && <div className="lock-icon">🔒</div>}
 </div>
 ))}
 </div>
 </section>
 ))}
+
 </main>
 );
 }
+
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script>
 
@@ -165,20 +188,17 @@ authDomain:"og-pirate-login.firebaseapp.com",
 projectId:"og-pirate-login"
 });
 const auth=firebase.auth(),db=firebase.firestore();
-window.currentUser=null;window.isPremium=false;
+window.isPremium=false;
+
+auth.onAuthStateChanged(async u=>{
+if(!u) return;
+const d=await db.collection("users").doc(u.uid).get();
+if(d.exists && Date.now()<d.data().expiry) window.isPremium=true;
+});
 
 function googleLogin(){
 auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
 }
-
-auth.onAuthStateChanged(async u=>{
-const o=document.getElementById("loginOverlay");
-if(!u){o.style.display="flex";return;}
-o.style.display="none";
-window.currentUser=u;
-const d=await db.collection("users").doc(u.uid).get();
-if(d.exists && Date.now()<d.data().expiry)window.isPremium=true;
-});
 
 function startPayment(p){
 new Razorpay({
@@ -186,17 +206,8 @@ key:"rzp_live_S9L7SGabPrW69z",
 amount:p==="monthly"?5000:19900,
 currency:"INR",
 name:"THE OG PIRATE",
-handler:()=>activatePremium(p)
+handler:()=>alert("Premium Activated 🎉")
 }).open();
-}
-
-function activatePremium(p){
-const n=Date.now(),e=p==="monthly"?n+30*86400000:n+365*86400000;
-db.collection("users").doc(window.currentUser.uid).set({
-premium:true,plan:p,expiry:e
-},{merge:true});
-window.isPremium=true;
-alert("Premium Activated 🎉");
 }
 </script>
 
