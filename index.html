@@ -10,7 +10,8 @@
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date()); gtag('config','G-GN1HCFMP7Y');
+gtag('js',new Date());
+gtag('config','G-GN1HCFMP7Y');
 </script>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -21,7 +22,6 @@ gtag('js',new Date()); gtag('config','G-GN1HCFMP7Y');
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <style>
@@ -42,6 +42,7 @@ body{background:radial-gradient(circle at top,#020617,#000);overflow-x:hidden}
 <body class="text-gray-200">
 <div id="root"></div>
 
+<!-- LOGIN OVERLAY -->
 <div id="loginOverlay">
   <div style="background:black;padding:28px;border-radius:16px;border:1px solid #22d3ee;text-align:center">
     <h2 style="color:#22d3ee;font-size:22px;margin-bottom:16px">Login Required</h2>
@@ -52,31 +53,49 @@ body{background:radial-gradient(circle at top,#020617,#000);overflow-x:hidden}
 </div>
 
 <script>
+/* 🔥 FIREBASE INIT */
 firebase.initializeApp({
   apiKey:"AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
   authDomain:"og-pirate-login.firebaseapp.com",
   projectId:"og-pirate-login"
 });
 
-const auth=firebase.auth();
-const db=firebase.firestore();
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+/* 🔐 CRITICAL FIX FOR GITHUB PAGES */
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
 window.isPremium=false;
 window.currentUser=null;
 
-/* redirect result safe handle */
-auth.getRedirectResult().catch(()=>{});
+/* HANDLE REDIRECT RESULT SAFELY */
+auth.getRedirectResult()
+  .then(res=>{
+    if(res && res.user){
+      console.log("Logged in:",res.user.email);
+    }
+  })
+  .catch(err=>console.error(err));
 
 function getDeviceId(){
   let id=localStorage.getItem("device_id");
-  if(!id){id=crypto.randomUUID();localStorage.setItem("device_id",id);}
+  if(!id){
+    id=crypto.randomUUID();
+    localStorage.setItem("device_id",id);
+  }
   return id;
 }
 
 const MAX_DEVICES=2;
 
+/* AUTH STATE */
 auth.onAuthStateChanged(async user=>{
   const overlay=document.getElementById("loginOverlay");
-  if(!user){overlay.style.display="flex";return;}
+  if(!user){
+    overlay.style.display="flex";
+    return;
+  }
 
   window.currentUser=user;
   const deviceId=getDeviceId();
@@ -96,16 +115,19 @@ auth.onAuthStateChanged(async user=>{
   }
 
   devices[deviceId]=Date.now();
-  await ref.update({devices});
+  await ref.set({devices},{merge:true});
+
   window.isPremium=true;
   overlay.style.display="none";
 });
 
+/* GOOGLE LOGIN */
 function googleLogin(){
   const provider=new firebase.auth.GoogleAuthProvider();
   auth.signInWithRedirect(provider);
 }
 
+/* PAYMENT */
 function startPayment(plan){
   const amount=plan==="monthly"?5000:19900;
   const duration=plan==="monthly"?2592000000:31536000000;
@@ -123,7 +145,8 @@ function startPayment(plan){
 
       await db.collection("payments").add({
         uid,email:window.currentUser.email,
-        plan,amount:plan==="monthly"?50:199,
+        plan,
+        amount:plan==="monthly"?50:199,
         payment_id:res.razorpay_payment_id,
         date:Date.now()
       });
