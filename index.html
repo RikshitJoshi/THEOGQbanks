@@ -48,25 +48,25 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* 🔥 ONLY AUTH CONTROLS OVERLAY */
-auth.onAuthStateChanged(user=>{
-  document.getElementById("loginOverlay").style.display =
-    user ? "none" : "flex";
-
-  window.currentUser = user;
-});
-
-/* LOGIN */
-function googleLogin(){
-  auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
-}
-
-/* PREMIUM CHECK (SEPARATE, SAFE) */
+window.currentUser = null;
 window.isPremium = false;
 
+/* 🔥 SINGLE SOURCE OF TRUTH */
 auth.onAuthStateChanged(async user=>{
-  if(!user) return;
+  const overlay = document.getElementById("loginOverlay");
 
+  if(!user){
+    overlay.style.display = "flex";
+    window.currentUser = null;
+    window.isPremium = false;
+    return;
+  }
+
+  /* USER LOGGED IN */
+  overlay.style.display = "none";
+  window.currentUser = user;
+
+  /* PREMIUM CHECK (NO UI TOUCH) */
   const ref = db.collection("users").doc(user.uid);
   const snap = await ref.get();
 
@@ -80,6 +80,12 @@ auth.onAuthStateChanged(async user=>{
   window.isPremium = d.expiry && Date.now() < d.expiry;
 });
 
+/* 🔐 POPUP LOGIN (MOST STABLE ON GITHUB PAGES) */
+function googleLogin(){
+  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    .catch(err=>alert(err.message));
+}
+
 /* PAYMENT */
 function startPayment(plan){
   const amount = plan==="monthly"?5000:19900;
@@ -87,7 +93,8 @@ function startPayment(plan){
 
   new Razorpay({
     key:"rzp_live_S9L7SGabPrW69z",
-    amount,currency:"INR",
+    amount,
+    currency:"INR",
     handler:async res=>{
       await db.collection("users").doc(currentUser.uid).set({
         email:currentUser.email,
@@ -104,7 +111,7 @@ function startPayment(plan){
 <script type="text/babel">
 function App(){
 
-const sections=[
+const data=[
 {title:"1st Year MBBS",free:true,items:[
 ["🦴","Anatomy","prepX_Anatomy.html"],
 ["❤️","Physiology","PrepX_Physiology.html"],
@@ -115,30 +122,28 @@ const sections=[
 ["🗡️","Surgery","prepX_Surgery.html"],
 ["👶","Pediatrics","prepX_Pediatrics.html"]
 ]},
-{title:"Exams & Quizzes",free:false,items:[
+{title:"Quizzes",free:false,items:[
 ["❓","NEET PG Quiz","https://neetpgquizz.netlify.app/"],
 ["❓","FMGE Quiz","https://fmgequizz.netlify.app/"]
 ]}
 ];
 
 function openItem(link,free){
-  if(free) return window.location.href=link;
+  if(free) return location.href=link;
   if(!window.isPremium){
     const c=prompt("Premium required\nM=₹50\nY=₹199");
     if(c==="m") startPayment("monthly");
     if(c==="y") startPayment("yearly");
     return;
   }
-  link.startsWith("http")?window.open(link):window.location.href=link;
+  link.startsWith("http")?window.open(link):location.href=link;
 }
 
 return(
 <div className="max-w-5xl mx-auto p-6">
-<h1 className="text-3xl font-bold mb-6 text-center">
-Medical Question Bank
-</h1>
+<h1 className="text-3xl font-bold mb-6 text-center">Medical Question Bank</h1>
 
-{sections.map(s=>(
+{data.map(s=>(
 <div key={s.title} className="mb-10">
 <h2 className="text-xl mb-4">{s.title}</h2>
 <div className="grid md:grid-cols-3 gap-4">
