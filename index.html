@@ -5,186 +5,238 @@
 <title>Medical Question Bank | NEET PG & INI-CET</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+<!-- Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GN1HCFMP7Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GN1HCFMP7Y');
+</script>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
 <style>
-body{background:#020617;color:#e5e7eb}
-.card{background:#000;padding:1.5rem;border-radius:1rem;border:1px solid #1f2937;cursor:pointer;position:relative}
-.locked{filter:blur(2px)}
-.lock-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(0,0,0,.5)}
-#loginOverlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center}
-.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{height:42px}
-.brand h1{font-size:1.5rem;font-weight:800}
-.brand span{font-size:.9rem;color:#94a3b8}
-.insta{font-size:1.3rem}
+body {
+  background: radial-gradient(circle at top, #020617, #000);
+  overflow-x: hidden;
+}
+.intro { animation: fadeIn 1.2s ease-out both; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.pulse { animation: pulseGlow 3s infinite; }
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 25px #ec4899; }
+  50% { box-shadow: 0 0 55px #ec4899; }
+}
+.card {
+  background: rgba(0,0,0,0.7);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.3s ease;
+  display: block;
+}
+.card:hover {
+  box-shadow: 0 0 25px currentColor;
+  transform: translateY(-6px);
+}
+.subject-icon {
+  font-size: 2.4rem;
+  display: inline-block;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.08); }
+}
+.card:hover .subject-icon {
+  animation: hoverPulse 0.6s ease-in-out;
+}
+@keyframes hoverPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1.1); }
+}
+.ig-icon { animation: igPulse 2.5s infinite; }
+@keyframes igPulse {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.15) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+#iframeOverlay {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:black;
+}
+#iframeOverlay iframe {
+  width:100%;
+  height:100%;
+  border:none;
+}
+.close-btn {
+  position:fixed;
+  top:16px;
+  left:16px;
+  z-index:10000;
+  padding:10px 14px;
+  border-radius:12px;
+  background:rgba(0,0,0,0.85);
+  border:1px solid #22d3ee;
+  color:#22d3ee;
+  font-weight:600;
+}
+.close-btn:hover {
+  background:#22d3ee;
+  color:#000;
+  box-shadow:0 0 20px #22d3ee;
+}
 </style>
 </head>
 
-<body>
+<body class="text-gray-200">
+
+<a href="https://instagram.com/nameisrikshit" target="_blank"
+class="absolute top-4 left-4 z-10 flex items-center gap-2
+px-4 py-2 rounded-xl bg-black/80 border border-pink-500/50
+text-pink-400 text-sm font-semibold
+hover:bg-pink-500 hover:text-black
+hover:shadow-[0_0_20px_#ec4899]
+transition-all">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+fill="currentColor" class="w-5 h-5 ig-icon">
+<path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-.75a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/>
+</svg>
+Contact Admin
+</a>
+
 <div id="root"></div>
 
-<!-- LOGIN OVERLAY -->
-<div id="loginOverlay">
-  <div style="background:black;padding:28px;border-radius:14px;text-align:center">
-    <h2 class="text-xl mb-4">Login Required</h2>
-    <button onclick="googleLogin()" class="px-6 py-3 bg-cyan-400 text-black font-bold rounded-lg">
-      Continue with Google
-    </button>
-  </div>
+<div id="iframeOverlay">
+  <button class="close-btn" onclick="closeIframe()">✖ Close</button>
+  <iframe src="https://neetpgquizz.netlify.app/" allowfullscreen></iframe>
 </div>
 
-<script>
-firebase.initializeApp({
-  apiKey:"AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
-  authDomain:"og-pirate-login.firebaseapp.com",
-  projectId:"og-pirate-login"
-});
-
-const auth=firebase.auth();
-const db=firebase.firestore();
-
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-
-window.currentUser=null;
-window.isPremium=false;
-
-auth.onAuthStateChanged(async user=>{
-  const overlay=document.getElementById("loginOverlay");
-  if(!user){
-    overlay.style.display="flex";
-    window.isPremium=false;
-    return;
-  }
-
-  overlay.style.display="none";
-  window.currentUser=user;
-
-  const ref=db.collection("users").doc(user.uid);
-  const snap=await ref.get();
-
-  if(!snap.exists){
-    await ref.set({email:user.email,createdAt:Date.now()});
-    window.isPremium=false;
-  }else{
-    const d=snap.data();
-    window.isPremium=!!(d.expiry && Date.now()<d.expiry);
-  }
-});
-
-function googleLogin(){
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .catch(e=>alert(e.message));
-}
-
-function startPayment(plan){
-  const amount=plan==="monthly"?5000:19900;
-  const duration=plan==="monthly"?2592000000:31536000000;
-
-  new Razorpay({
-    key:"rzp_live_S9L7SGabPrW69z",
-    amount,currency:"INR",
-    handler:async ()=>{
-      await db.collection("users").doc(currentUser.uid).set({
-        email:currentUser.email,
-        plan,expiry:Date.now()+duration
-      },{merge:true});
-      alert("Premium Activated");
-      window.isPremium=true;
-    }
-  }).open();
-}
-</script>
-
 <script type="text/babel">
-function App(){
+function App() {
+const [search, setSearch] = React.useState("");
 
-const sections=[
-{title:"1st Year MBBS",free:true,items:[
-["🦴","Anatomy","prepX_Anatomy.html"],
-["❤️","Physiology","PrepX_Physiology.html"],
-["🧪","Biochemistry","prepX_Biochemistry.html"]
+const years = [
+{ title:"1st Year MBBS", subjects:[
+["🦴","PrepX Anatomy","prepX_Anatomy.html","text-yellow-400"],
+["❤️","PrepX Physiology","PrepX_Physiology.html","text-cyan-400"],
+["🧪","PrepX Biochemistry","prepX_Biochemistry.html","text-pink-400"],
 ]},
-{title:"2nd Year MBBS",free:false,items:[
-["🔬","Pathology","prepX_Pathology.html"],
-["💊","Pharmacology","prepX_Pharmacology.html"],
-["🦠","Microbiology","prepX_Microbiology.html"]
+{ title:"2nd Year MBBS", subjects:[
+["🔬","PrepX Pathology","prepX_Pathology.html","text-rose-400"],
+["💊","PrepX Pharmacology","prepX_Pharmacology.html","text-green-400"],
+["🦠","PrepX Microbiology","prepX_Microbiology.html","text-purple-400"],
 ]},
-{title:"Final Year MBBS",free:false,items:[
-["🩺","Medicine","prepX_Medicine.html"],
-["🗡️","Surgery","prepX_Surgery.html"],
-["👶","Pediatrics","prepX_Pediatrics.html"],
-["🤰","OBGYN","prepX_OBSGYNAE.html"],
-["🦿","Orthopaedics","prepX_Orthopaedics.html"],
-["👂","ENT","prepX_ENT.html"],
-["👁️","Ophthalmology","prepX_OPTHA.html"],
-["🧴","Dermatology","prepX_Dermatology.html"],
-["🧠","Psychiatry","prepX_Psychiatry.html"],
-["😴","Anaesthesia","prepX_Anaesthesia.html"],
-["🩻","Radiology","prepX_Radiology.html"]
+{ title:"3rd Year MBBS – Part 1", subjects:[
+["🌍","PrepX PSM","prepX_PSM.html","text-orange-400"],
+["⚖️","PrepX Forensic Medicine","prepX_FMT.html","text-gray-300"],
 ]},
-{title:"Exams & Quizzes",free:false,items:[
-["❓","NEET PG Quiz","https://neetpgquizz.netlify.app/"],
-["❓","FMGE Quiz","https://fmgequizz.netlify.app/"]
+{ title:"Final Year MBBS", subjects:[
+["🩺","PrepX Medicine","prepX_Medicine.html","text-cyan-300"],
+["🗡️","PrepX Surgery","prepX_Surgery.html","text-red-400"],
+["👶","PrepX Pediatrics","prepX_Pediatrics.html","text-teal-400"],
+["🤰","PrepX OBGYN","prepX_OBSGYNAE.html","text-rose-300"],
+["🦿","PrepX Orthopaedics","prepX_Orthopaedics.html","text-amber-400"],
+["👂","PrepX ENT","prepX_ENT.html","text-indigo-400"],
+["👁️","PrepX Ophthalmology","prepX_OPTHA.html","text-blue-400"],
+["🧴","PrepX Dermatology","prepX_Dermatology.html","text-pink-300"],
+["🧠","PrepX Psychiatry","prepX_Psychiatry.html","text-violet-400"],
+["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
+["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
+]},
+{ title:"Exams & Extras", subjects:[
+["❓","NEET PG / INICET Quizz (1st–3rd Year 🚨OPEN IN DESKTOP SITE MODE IN PHONES)","Quizz 1st-3rd year.html","text-cyan-400"],
+["❓","NEET PG / INICET Quizzs (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","__IFRAME__","text-cyan-400"],
+["❓","FMGE Quizzs / INICET (🚨OPEN IN DESKTOP SITE MODE IN PHONES)","https://fmgequizz.netlify.app/","text-cyan-400"],
+["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
+["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
+["🏥","INICET-AIIMS - Combined Tests","INICET-AIIMS - Combined Tests.html","text-yellow-300"],
+["💎","M@rrow Pearls","Marrow Pearls.html","text-pink-300"],
 ]}
 ];
 
-function openItem(link,free){
-  if(free) return location.href=link;
-  if(!window.isPremium){
-    const c=prompt("Premium required\nM = ₹50\nY = ₹199");
-    if(c==="m") startPayment("monthly");
-    if(c==="y") startPayment("yearly");
-    return;
-  }
-  link.startsWith("http")?window.open(link):location.href=link;
+function handleClick(link, title){
+  gtag('event','subject_click',{ event_category:'subjects', event_label:title });
+  if(link === "__IFRAME__") openIframe();
+  else window.location.href = link;
 }
 
-return(
-<div className="max-w-6xl mx-auto p-6">
+return (
+<main className="max-w-6xl mx-auto px-4 py-10 intro">
+<section className="text-center mb-6">
+<h1 className="text-3xl md:text-4xl font-extrabold text-white">
+Medical Question Bank
+</h1>
+<p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
+</section>
 
-{/* HEADER */}
-<div className="header">
-  <div className="brand">
-    <img src="og pirate.jpeg" alt="OG Pirate"/>
-    <div>
-      <h1>THE OG PIRATE</h1>
-      <span>Medical Question Bank • NEET PG & INI-CET</span>
-    </div>
-  </div>
-  <a className="insta" href="https://instagram.com/theogpiratee" target="_blank">📷</a>
+<section className="text-center mb-16">
+<img src="og pirate.jpeg"
+className="mx-auto w-48 h-48 rounded-full border-4 border-pink-500 pulse"/>
+<h2 className="mt-4 text-3xl font-bold text-pink-400 tracking-widest">
+THE OG PIRATE
+</h2>
+</section>
+
+<div className="max-w-md mx-auto mb-14">
+<input value={search} onChange={e=>setSearch(e.target.value)}
+placeholder="Search subjects..."
+className="w-full px-4 py-3 rounded-xl bg-black/70
+border border-cyan-400/40 focus:ring-2 focus:ring-cyan-400 outline-none"/>
 </div>
 
-{sections.map(s=>(
-<div key={s.title} className="mb-12">
-<h2 className="text-xl mb-4">{s.title}</h2>
-<div className="grid md:grid-cols-3 gap-4">
-{s.items.map(([i,t,l])=>(
-<div key={t} onClick={()=>openItem(l,s.free)}
- className={`card ${s.free?"":"locked"}`}>
-<div className="text-3xl">{i}</div>
-<div className="mt-2">{t}</div>
-{!s.free && <div className="lock-icon">🔒</div>}
+{years.map(year=>{
+const filtered = year.subjects.filter(s =>
+s[1].toLowerCase().includes(search.toLowerCase()));
+if(!filtered.length) return null;
+
+return (
+<section key={year.title} className="mb-14">
+<h3 className="text-xl font-bold text-cyan-400 mb-6">{year.title}</h3>
+<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+{filtered.map(([icon,title,link,color])=>(
+<div key={title}
+onClick={()=>handleClick(link, title)}
+className={`card ${color} cursor-pointer`}>
+<div className="subject-icon mb-3">{icon}</div>
+<h2 className="text-lg font-semibold">{title}</h2>
 </div>
 ))}
 </div>
-</div>
-))}
-</div>
+</section>
+);
+})}
+
+<footer className="text-center text-gray-600 text-xs mt-20">
+© 2026 Rikshit Joshi • THE OG PIRATE
+</footer>
+</main>
 );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 </script>
 
-</body>
-</html>
+<script>
+function openIframe() {
+  document.getElementById("iframeOverlay").style.display = "block";
+  document.body.style.overflow = "hidden";
+  gtag('event','open_quizz_iframe',{ event_category:'engagement', event_label:'NEET PG Quizz iframe' });
+}
+function closeIframe() {
+  document.getElementById("iframeOverlay").style.display = "none";
+  document.body.style.overflow = "auto";
+}
+</script>
