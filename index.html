@@ -22,20 +22,19 @@ gtag('config','G-GN1HCFMP7Y');
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <style>
 body{background:radial-gradient(circle at top,#020617,#000);overflow-x:hidden}
 .intro{animation:fadeIn 1.2s ease-out both}
 @keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1}}
-.pulse{animation:pulseGlow 3s infinite}
-@keyframes pulseGlow{0%,100%{box-shadow:0 0 25px #ec4899}50%{box-shadow:0 0 55px #ec4899}}
 .card{background:rgba(0,0,0,.7);padding:1.5rem;border-radius:1rem;border:1px solid rgba(255,255,255,.15);transition:.3s;position:relative}
 .card:hover{box-shadow:0 0 25px currentColor;transform:translateY(-6px)}
 .subject-icon{font-size:2.4rem}
 .locked{filter:blur(2.5px)}
-.lock-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.2rem;background:rgba(0,0,0,.45);border-radius:1rem}
-#loginOverlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center}
+.lock-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(0,0,0,.45);border-radius:1rem}
+#loginOverlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 
@@ -63,88 +62,73 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
-/* 🔐 CRITICAL FIX FOR GITHUB PAGES */
+/* REQUIRED FOR GITHUB PAGES */
 auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-window.isPremium=false;
-window.currentUser=null;
+window.isPremium = false;
+window.currentUser = null;
 
-/* HANDLE REDIRECT RESULT SAFELY */
-auth.getRedirectResult()
-  .then(res=>{
-    if(res && res.user){
-      console.log("Logged in:",res.user.email);
-    }
-  })
-  .catch(err=>console.error(err));
-
-function getDeviceId(){
-  let id=localStorage.getItem("device_id");
-  if(!id){
-    id=crypto.randomUUID();
-    localStorage.setItem("device_id",id);
-  }
-  return id;
-}
-
-const MAX_DEVICES=2;
-
-/* AUTH STATE */
+/* AUTH CONTROLS LOGIN OVERLAY — NOTHING ELSE */
 auth.onAuthStateChanged(async user=>{
-  const overlay=document.getElementById("loginOverlay");
+  const overlay = document.getElementById("loginOverlay");
+
   if(!user){
     overlay.style.display="flex";
+    window.isPremium = false;
     return;
   }
 
-  window.currentUser=user;
-  const deviceId=getDeviceId();
-  const ref=db.collection("users").doc(user.uid);
-  const snap=await ref.get();
-
-  if(!snap.exists || Date.now()>snap.data().expiry){
-    overlay.style.display="none";
-    return;
-  }
-
-  const devices=snap.data().devices||{};
-  if(!devices[deviceId] && Object.keys(devices).length>=MAX_DEVICES){
-    alert("Device limit exceeded ❌");
-    auth.signOut();
-    return;
-  }
-
-  devices[deviceId]=Date.now();
-  await ref.set({devices},{merge:true});
-
-  window.isPremium=true;
   overlay.style.display="none";
+  window.currentUser = user;
+
+  const ref = db.collection("users").doc(user.uid);
+  const snap = await ref.get();
+
+  if(!snap.exists){
+    await ref.set({
+      email:user.email,
+      createdAt:Date.now(),
+      devices:{}
+    });
+    window.isPremium = false;
+    return;
+  }
+
+  const data = snap.data();
+  if(data.expiry && Date.now() < data.expiry){
+    window.isPremium = true;
+  } else {
+    window.isPremium = false;
+  }
 });
 
 /* GOOGLE LOGIN */
 function googleLogin(){
-  const provider=new firebase.auth.GoogleAuthProvider();
-  auth.signInWithRedirect(provider);
+  auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider());
 }
 
 /* PAYMENT */
 function startPayment(plan){
-  const amount=plan==="monthly"?5000:19900;
-  const duration=plan==="monthly"?2592000000:31536000000;
+  const amount = plan==="monthly"?5000:19900;
+  const duration = plan==="monthly"?2592000000:31536000000;
 
   new Razorpay({
     key:"rzp_live_S9L7SGabPrW69z",
-    amount,currency:"INR",name:"THE OG PIRATE",
+    amount,
+    currency:"INR",
+    name:"THE OG PIRATE",
     handler:async res=>{
-      const uid=window.currentUser.uid;
+      const uid = window.currentUser.uid;
 
       await db.collection("users").doc(uid).set({
         email:window.currentUser.email,
-        plan,expiry:Date.now()+duration
+        plan,
+        expiry:Date.now()+duration
       },{merge:true});
 
       await db.collection("payments").add({
-        uid,email:window.currentUser.email,
+        uid,
+        email:window.currentUser.email,
         plan,
         amount:plan==="monthly"?50:199,
         payment_id:res.razorpay_payment_id,
@@ -199,13 +183,18 @@ const years=[
 ];
 
 function handleClick(link,free){
-  if(free){window.location.href=link;return;}
+  if(free){
+    window.location.href=link;
+    return;
+  }
+
   if(!window.isPremium){
     const c=prompt("Premium 🔒\nM = Monthly ₹50\nY = Yearly ₹199","");
     if(c?.toLowerCase()==="m") startPayment("monthly");
     if(c?.toLowerCase()==="y") startPayment("yearly");
     return;
   }
+
   if(link.startsWith("http")) window.open(link,"_blank");
   else window.location.href=link;
 }
@@ -213,7 +202,9 @@ function handleClick(link,free){
 return(
 <main className="max-w-6xl mx-auto px-4 py-10 intro">
 <section className="text-center mb-10">
-<h1 className="text-3xl md:text-4xl font-extrabold text-white">Medical Question Bank</h1>
+<h1 className="text-3xl md:text-4xl font-extrabold text-white">
+Medical Question Bank
+</h1>
 <p className="text-gray-400 mt-2">NEET PG | INI-CET</p>
 </section>
 
@@ -222,11 +213,12 @@ return(
 <h3 className="text-xl font-bold text-cyan-400 mb-6">{y.title}</h3>
 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
 {y.subjects.map(([i,t,l,c])=>(
-<div key={t} onClick={()=>handleClick(l,y.free)}
-className={`card ${c} cursor-pointer ${y.free?"":"locked"}`}>
-<div className="subject-icon mb-3">{i}</div>
-<h2 className="text-lg font-semibold">{t}</h2>
-{!y.free && <div className="lock-icon">🔒</div>}
+<div key={t}
+  onClick={()=>handleClick(l,y.free)}
+  className={`card ${c} cursor-pointer ${y.free?"":"locked"}`}>
+  <div className="subject-icon mb-3">{i}</div>
+  <h2 className="text-lg font-semibold">{t}</h2>
+  {!y.free && <div className="lock-icon">🔒</div>}
 </div>
 ))}
 </div>
