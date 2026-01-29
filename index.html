@@ -21,6 +21,7 @@ gtag('js',new Date()); gtag('config','G-GN1HCFMP7Y');
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <style>
@@ -56,8 +57,14 @@ firebase.initializeApp({
   authDomain:"og-pirate-login.firebaseapp.com",
   projectId:"og-pirate-login"
 });
-const auth=firebase.auth(), db=firebase.firestore();
-window.isPremium=false; window.currentUser=null;
+
+const auth=firebase.auth();
+const db=firebase.firestore();
+window.isPremium=false;
+window.currentUser=null;
+
+/* redirect result safe handle */
+auth.getRedirectResult().catch(()=>{});
 
 function getDeviceId(){
   let id=localStorage.getItem("device_id");
@@ -77,12 +84,15 @@ auth.onAuthStateChanged(async user=>{
   const snap=await ref.get();
 
   if(!snap.exists || Date.now()>snap.data().expiry){
-    overlay.style.display="none"; return;
+    overlay.style.display="none";
+    return;
   }
 
   const devices=snap.data().devices||{};
   if(!devices[deviceId] && Object.keys(devices).length>=MAX_DEVICES){
-    alert("Device limit exceeded ❌"); auth.signOut(); return;
+    alert("Device limit exceeded ❌");
+    auth.signOut();
+    return;
   }
 
   devices[deviceId]=Date.now();
@@ -92,7 +102,8 @@ auth.onAuthStateChanged(async user=>{
 });
 
 function googleLogin(){
-  auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+  const provider=new firebase.auth.GoogleAuthProvider();
+  auth.signInWithRedirect(provider);
 }
 
 function startPayment(plan){
@@ -104,6 +115,7 @@ function startPayment(plan){
     amount,currency:"INR",name:"THE OG PIRATE",
     handler:async res=>{
       const uid=window.currentUser.uid;
+
       await db.collection("users").doc(uid).set({
         email:window.currentUser.email,
         plan,expiry:Date.now()+duration
@@ -154,6 +166,13 @@ const years=[
 ["😴","PrepX Anaesthesia","prepX_Anaesthesia.html","text-emerald-400"],
 ["🩻","PrepX Radiology","prepX_Radiology.html","text-sky-400"],
 ]},
+{title:"Exams & Extras",free:false,subjects:[
+["❓","NEET PG / INI-CET Quiz","https://neetpgquizz.netlify.app/","text-cyan-400"],
+["❓","FMGE Quiz","https://fmgequizz.netlify.app/","text-cyan-400"],
+["📚","PYQs NEET PG","PYQs-NEET-PG.html","text-yellow-300"],
+["🏥","AIIMS 2014–2018","AIIMS 2014-2018.html","text-yellow-300"],
+["💎","Marrow Pearls","Marrow Pearls.html","text-pink-300"],
+]},
 ];
 
 function handleClick(link,free){
@@ -164,7 +183,8 @@ function handleClick(link,free){
     if(c?.toLowerCase()==="y") startPayment("yearly");
     return;
   }
-  window.location.href=link;
+  if(link.startsWith("http")) window.open(link,"_blank");
+  else window.location.href=link;
 }
 
 return(
