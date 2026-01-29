@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Payment History</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<style>
+body{background:#000;color:#fff;font-family:system-ui;padding:20px}
+h2{margin-bottom:16px}
+li{margin-bottom:10px}
+</style>
+</head>
+
+<body>
+<h2>🧾 Payment History</h2>
+<ul id="list"></ul>
+
+<script>
+firebase.initializeApp({
+  apiKey:"AIzaSyBtoP56S-PH9mr8_HMjl6Vp1-akZBHPv4A",
+  authDomain:"og-pirate-login.firebaseapp.com",
+  projectId:"og-pirate-login"
+});
+
+const auth=firebase.auth();
+const db=firebase.firestore();
+
+auth.onAuthStateChanged(async user=>{
+  if(!user){
+    location.href="index.html";
+    return;
+  }
+
+  const q = await db.collection("payments")
+    .where("uid","==",user.uid)
+    .orderBy("date","desc")
+    .get();
+
+  const ul=document.getElementById("list");
+  ul.innerHTML="";
+
+  if(q.empty){
+    ul.innerHTML="<li>No payments found</li>";
+    return;
+  }
+
+  q.forEach(d=>{
+    const p=d.data();
+    const li=document.createElement("li");
+    li.textContent =
+      `${new Date(p.date).toLocaleString()} | ${p.plan.toUpperCase()} | ₹${p.amount} | ${p.payment_id}`;
+    ul.appendChild(li);
+  });
+});
+</script>
+</body>
+</html>
