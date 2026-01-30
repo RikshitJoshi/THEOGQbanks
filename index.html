@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Redirecting… | THE OG QBANKS</title>
+<title>Website Moved | THE OG PIRATE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
@@ -13,38 +15,57 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  background:radial-gradient(circle at top,#020617,#000);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   color:#fff;
   overflow:hidden;
+  background:
+    radial-gradient(circle at top,#020617,#000),
+    linear-gradient(120deg,rgba(236,72,153,.05),transparent 60%);
+  animation:bgBreath 10s ease-in-out infinite;
 }
 
-/* intro animation */
-.intro{
-  animation:fadeIn 1.2s ease-out both;
+/* 🌌 background breathing */
+@keyframes bgBreath{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.15)}
 }
+
+/* 🏴‍☠️ pirate scan line */
+body::after{
+  content:"";
+  position:fixed;
+  inset:-40%;
+  background:linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(34,211,238,.08),
+    transparent 60%
+  );
+  animation:scan 8s linear infinite;
+  pointer-events:none;
+}
+@keyframes scan{
+  from{transform:translateX(-40%)}
+  to{transform:translateX(40%)}
+}
+
+/* intro */
+.intro{animation:fadeIn 1.2s ease-out both}
 @keyframes fadeIn{
   from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* pulse glow (same as main site) */
-.pulse{
-  animation:pulseGlow 3s infinite;
-}
-@keyframes pulseGlow{
-  0%,100%{box-shadow:0 0 25px #ec4899}
-  50%{box-shadow:0 0 55px #ec4899}
+  to{opacity:1;transform:none}
 }
 
 /* container */
 .container{
   text-align:center;
-  max-width:420px;
-  padding:20px;
+  max-width:460px;
+  padding:26px;
+  position:relative;
+  z-index:1;
 }
 
-/* logo */
+/* 🟣 neon logo */
 .logo-img{
   width:190px;
   height:190px;
@@ -52,21 +73,49 @@ body{
   border-radius:9999px;
   border:4px solid #ec4899;
   margin:0 auto 18px;
+  box-shadow:
+    0 0 25px #ec4899,
+    0 0 60px rgba(236,72,153,.6);
+  animation:
+    pulseGlow 3s infinite,
+    drift 14s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 25px #ec4899,0 0 60px rgba(236,72,153,.6)}
+  50%{box-shadow:0 0 45px #ec4899,0 0 90px rgba(236,72,153,.9)}
+}
+@keyframes drift{
+  0%,100%{transform:rotate(0deg)}
+  50%{transform:rotate(1.5deg)}
 }
 
-/* text */
+/* title */
 .title{
-  font-size:28px;
+  font-size:30px;
   font-weight:800;
   color:#ec4899;
-  letter-spacing:0.15em;
-  margin-bottom:6px;
+  letter-spacing:0.14em;
+  margin-bottom:10px;
 }
 
-.sub{
+/* message */
+.message{
+  font-size:15px;
+  line-height:1.7;
+  color:#cbd5f5;
+  margin-bottom:18px;
+  animation:textFade 1.6s ease;
+}
+@keyframes textFade{from{opacity:0}to{opacity:1}}
+
+.notice{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(34,211,238,0.25);
+  border-radius:14px;
+  padding:14px 16px;
+  font-size:14px;
   color:#94a3b8;
   margin-bottom:18px;
-  font-size:15px;
 }
 
 /* countdown */
@@ -74,7 +123,7 @@ body{
   font-size:42px;
   font-weight:800;
   color:#22d3ee;
-  margin-bottom:14px;
+  margin-bottom:12px;
   animation:scaleIn .4s ease;
 }
 @keyframes scaleIn{
@@ -84,47 +133,63 @@ body{
 
 /* loader */
 .loader{
-  width:54px;
-  height:54px;
+  width:52px;
+  height:52px;
   border:4px solid rgba(255,255,255,.15);
   border-top:4px solid #22d3ee;
   border-radius:50%;
   animation:spin 1s linear infinite;
-  margin:0 auto 18px;
+  margin:0 auto 16px;
 }
-@keyframes spin{
-  to{transform:rotate(360deg)}
-}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* manual button */
+/* ⚡ neon button */
 .redirect-btn{
-  margin-top:12px;
   display:inline-block;
-  padding:14px 26px;
+  padding:14px 28px;
   border-radius:999px;
   background:#22d3ee;
   color:#000;
   font-weight:800;
-  letter-spacing:.05em;
+  letter-spacing:.06em;
   cursor:pointer;
-  transition:all .3s ease;
-  box-shadow:0 0 25px rgba(34,211,238,.5);
+  position:relative;
+  overflow:hidden;
+  transition:.3s;
+  box-shadow:0 0 25px rgba(34,211,238,.45);
   animation:btnPulse 2s infinite;
+}
+.redirect-btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255,255,255,.6),
+    transparent 70%
+  );
+  transform:translateX(-100%);
+}
+.redirect-btn:hover::after{
+  animation:shimmer 1s;
+}
+@keyframes shimmer{
+  to{transform:translateX(100%)}
 }
 .redirect-btn:hover{
   transform:scale(1.08);
-  box-shadow:0 0 45px #22d3ee;
+  box-shadow:0 0 55px #22d3ee;
 }
 @keyframes btnPulse{
   0%,100%{transform:scale(1)}
   50%{transform:scale(1.06)}
 }
 
-/* note */
 .note{
+  margin-top:14px;
   font-size:13px;
   color:#64748b;
-  margin-top:12px;
 }
 </style>
 </head>
@@ -133,39 +198,42 @@ body{
 
 <div class="container intro">
 
-  <!-- OG Pirate Logo -->
-  <img src="og pirate.jpeg" alt="OG Pirate"
-       class="logo-img pulse">
+  <img src="og pirate.jpeg" alt="OG Pirate" class="logo-img">
 
   <div class="title">THE OG PIRATE</div>
-  <div class="sub">Redirecting you to the new platform</div>
 
-  <!-- Countdown -->
+  <div class="message">
+    This website has been officially moved by the owner to a new and more secure platform.
+  </div>
+
+  <div class="notice">
+    To enhance <strong>security</strong>, <strong>user privacy</strong>, and long-term stability,
+    access has been shifted to our new domain.
+  </div>
+
   <div class="countdown" id="count">3</div>
-
   <div class="loader"></div>
 
-  <!-- Manual Redirect Button -->
   <div class="redirect-btn" id="manualBtn">
-    Go Now (<span id="btnCount">3</span>)
+    Continue Securely (<span id="btnCount">3</span>)
   </div>
 
   <div class="note">
-    You will be redirected automatically
+    Automatic redirect will begin shortly
   </div>
 
 </div>
 
 <script>
 let seconds = 3;
+const TARGET = "https://theogqbanks.netlify.app/";
+
 const countEl = document.getElementById("count");
 const btnCountEl = document.getElementById("btnCount");
-const TARGET = "https://theogqbanks.netlify.app/";
 
 function go(){
   window.location.replace(TARGET);
 }
-
 document.getElementById("manualBtn").onclick = go;
 
 const timer = setInterval(()=>{
@@ -173,10 +241,10 @@ const timer = setInterval(()=>{
   if(seconds > 0){
     countEl.textContent = seconds;
     btnCountEl.textContent = seconds;
-    countEl.style.animation = "none";
+    countEl.style.animation="none";
     countEl.offsetHeight;
-    countEl.style.animation = null;
-  } else {
+    countEl.style.animation=null;
+  }else{
     clearInterval(timer);
     go();
   }
